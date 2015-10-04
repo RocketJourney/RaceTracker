@@ -28,6 +28,9 @@
                                     <segment title="Time"/>
                                 </segments>
                                 <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <connections>
+                                    <action selector="changedTab:" destination="vXZ-lx-hvc" eventType="valueChanged" id="AEY-rC-zlc"/>
+                                </connections>
                             </segmentedControl>
                             <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dI6-M2-5la" userLabel="distance_run">
                                 <rect key="frame" x="187" y="189" width="240" height="128"/>
@@ -75,6 +78,7 @@
                                     <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="peA-dg-heg">
                                         <rect key="frame" x="0.0" y="-216" width="320" height="216"/>
                                         <animations/>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     </pickerView>
                                 </subviews>
                                 <animations/>
@@ -260,10 +264,10 @@
             </objects>
             <point key="canvasLocation" x="739.5" y="324.75"/>
         </scene>
-        <!--Table View Controller-->
+        <!--Run Settings Controller-->
         <scene sceneID="Iti-Px-pbh">
             <objects>
-                <tableViewController id="ZJX-1z-4Ri" sceneMemberID="viewController">
+                <tableViewController id="ZJX-1z-4Ri" customClass="RunSettingsController" customModule="RaceTracker_Example" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="4Do-gu-K5d">
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <animations/>
@@ -283,10 +287,31 @@
                             <outlet property="delegate" destination="ZJX-1z-4Ri" id="3eS-mD-smS"/>
                         </connections>
                     </tableView>
+                    <connections>
+                        <segue destination="I7C-ij-qsg" kind="custom" id="WBe-Ik-TaQ"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gq7-wW-piF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="739.5" y="1047"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="yxp-R8-hHv">
+            <objects>
+                <viewController id="I7C-ij-qsg" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="u5u-wJ-Oqq"/>
+                        <viewControllerLayoutGuide type="bottom" id="QWk-4j-wfC"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="wNU-Al-aM0">
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="riU-zU-UBw" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1560" y="1047"/>
         </scene>
         <!--Running View Controller-->
         <scene sceneID="cSh-6J-Rxo">

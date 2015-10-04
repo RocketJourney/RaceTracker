@@ -34,6 +34,8 @@
 		94823E341BC18DD6007F6A0D /* RunDistancePickerProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94823E331BC18DD6007F6A0D /* RunDistancePickerProvider.swift */; settings = {ASSET_TAGS = (); }; };
 		94823E361BC18DEE007F6A0D /* RunTimePickerProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94823E351BC18DEE007F6A0D /* RunTimePickerProvider.swift */; settings = {ASSET_TAGS = (); }; };
 		94823E3A1BC18E33007F6A0D /* Run.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94823E391BC18E33007F6A0D /* Run.swift */; settings = {ASSET_TAGS = (); }; };
+		94823E3C1BC1A954007F6A0D /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94823E3B1BC1A954007F6A0D /* Preferences.swift */; settings = {ASSET_TAGS = (); }; };
+		94823E3E1BC1AFA3007F6A0D /* RunPaceOscilateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94823E3D1BC1AFA3007F6A0D /* RunPaceOscilateController.swift */; settings = {ASSET_TAGS = (); }; };
 		FE55021BFB5A87F7BE049566 /* Pods_RaceTracker_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 417E792206A235EB6E65F2FC /* Pods_RaceTracker_Example.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
@@ -84,6 +86,8 @@
 		94823E331BC18DD6007F6A0D /* RunDistancePickerProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunDistancePickerProvider.swift; sourceTree = "<group>"; };
 		94823E351BC18DEE007F6A0D /* RunTimePickerProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunTimePickerProvider.swift; sourceTree = "<group>"; };
 		94823E391BC18E33007F6A0D /* Run.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Run.swift; sourceTree = "<group>"; };
+		94823E3B1BC1A954007F6A0D /* Preferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
+		94823E3D1BC1AFA3007F6A0D /* RunPaceOscilateController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunPaceOscilateController.swift; sourceTree = "<group>"; };
 		B20C39D2261318045EAFC173 /* RaceTracker.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = RaceTracker.podspec; path = ../RaceTracker.podspec; sourceTree = "<group>"; };
 		BB757844CB7B399526C8A69A /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		BE9E601D70827E8906705F31 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
@@ -142,10 +146,10 @@
 		607FACD21AFB9204008FA782 /* Example for RaceTracker */ = {
 			isa = PBXGroup;
 			children = (
-				94823E2A1BC17FC1007F6A0D /* utils */,
-				94053A061BC164A6003E50BE /* controllers */,
 				94823E321BC18DB8007F6A0D /* models */,
+				94053A061BC164A6003E50BE /* controllers */,
 				94823E2D1BC18150007F6A0D /* segues */,
+				94823E2A1BC17FC1007F6A0D /* utils */,
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
@@ -224,9 +228,10 @@
 		94053A061BC164A6003E50BE /* controllers */ = {
 			isa = PBXGroup;
 			children = (
-				94823E2E1BC18A12007F6A0D /* RunSettingsController.swift */,
 				607FACD71AFB9204008FA782 /* ViewController.swift */,
+				94823E2E1BC18A12007F6A0D /* RunSettingsController.swift */,
 				94053A041BC16461003E50BE /* RunningViewController.swift */,
+				94823E3D1BC1AFA3007F6A0D /* RunPaceOscilateController.swift */,
 			);
 			name = controllers;
 			sourceTree = "<group>";
@@ -272,6 +277,7 @@
 			isa = PBXGroup;
 			children = (
 				94823E391BC18E33007F6A0D /* Run.swift */,
+				94823E3B1BC1A954007F6A0D /* Preferences.swift */,
 			);
 			name = cache;
 			sourceTree = "<group>";
@@ -484,8 +490,10 @@
 				940539F91BC0C43A003E50BE /* RunCantoneseSpeaker.swift in Sources */,
 				940539FC1BC0C43A003E50BE /* RunFrenchSpeaker.swift in Sources */,
 				94823E341BC18DD6007F6A0D /* RunDistancePickerProvider.swift in Sources */,
+				94823E3E1BC1AFA3007F6A0D /* RunPaceOscilateController.swift in Sources */,
 				940539FD1BC0C43A003E50BE /* RunGermanSpeaker.swift in Sources */,
 				94823E3A1BC18E33007F6A0D /* Run.swift in Sources */,
+				94823E3C1BC1A954007F6A0D /* Preferences.swift in Sources */,
 				940539FE1BC0C43A003E50BE /* RunGreekSpeaker.swift in Sources */,
 				940539EC1BC0BF65003E50BE /* RaceTracker.swift in Sources */,
 				940539FF1BC0C43A003E50BE /* RunItalianSpeaker.swift in Sources */,

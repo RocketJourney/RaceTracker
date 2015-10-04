@@ -9,10 +9,10 @@
 import Foundation
 
 class RaceCoordinate {
-  dynamic var longitude = 0.0
-  dynamic var latitude = 0.0
-  dynamic var altitude = 0.0
-  dynamic var pace = 0.0
-  dynamic var section = 0
-  dynamic var position = 0
+  var longitude = 0.0
+  var latitude = 0.0
+  var altitude = 0.0
+  var pace = 0.0
+  var section = 0
+  var position = 0
 }

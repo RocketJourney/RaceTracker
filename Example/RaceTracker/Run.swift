@@ -9,5 +9,7 @@
 import Foundation
 
 class Run {
-  
+  var distance = 0.0
+  var time = 0
+  var pace = 0.0
 }

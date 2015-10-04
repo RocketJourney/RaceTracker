@@ -12,7 +12,7 @@ class GoRunSettings:UIStoryboardSegue {
   override func perform() {
     let viewController = sourceViewController as! ViewController
     let settingsController = destinationViewController as! RunSettingsController
-    
+    settingsController.delegate = viewController
     let navController = UINavigationController(rootViewController: settingsController)
     viewController.presentViewController(navController, animated: true, completion: nil)
   }
