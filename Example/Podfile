@@ -1,0 +1,13 @@
+source 'https://github.com/CocoaPods/Specs.git'
+use_frameworks!
+
+target 'RaceTracker_Example', :exclusive => true do
+  pod "RaceTracker", :path => "../"
+end
+
+target 'RaceTracker_Tests', :exclusive => true do
+  pod "RaceTracker", :path => "../"
+
+  pod 'Quick', '~> 0.3.1'
+  pod 'Nimble'
+end
