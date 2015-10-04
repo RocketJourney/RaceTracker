@@ -20,6 +20,10 @@ import Foundation
 import CoreLocation
 import AVFoundation
 
+typealias TimeStructure = (hours:Int, minutes:Int, seconds:Int)
+typealias DistanceStructure = (firstUnit:Int, secondUnit:Int)
+typealias PaceStructure = (firstUnit:Int, secondUnit:Int)
+
 protocol RunTrackerSpeechLanguageProvider {
   func sayFeedback(time:TimeStructure, distance:DistanceStructure, pace:PaceStructure)->String
   func sayFeedbackDecremental(time:TimeStructure, distance:DistanceStructure, pace:PaceStructure)->String
@@ -30,15 +34,16 @@ protocol RunTrackerSpeechLanguageProvider {
 
 protocol RaceTrackerDelegate {
   func updateViews(time: TimeStructure, distance: DistanceStructure, pace: PaceStructure, percent:Float)
-  func logString(string:String)
-  func goal(percent:CGFloat)
-  func cacheRun(distance:Distance,
+  func logDescriptionString(string:String)
+  func goalCompletion(percent:Double)
+  func cacheRun(distance:Double,
     time:Int,
     calories:Int,
     elevation:Double,
-    coordinates:Array<RaceCoordinate>,
-    metricMilestones:Array<Int>?,
-    royalMilestones:Array<Int>?)
+    coordinates:[RaceCoordinate],
+    metricMilestones:[Int]?,
+    royalMilestones:[Int]?)
+  func setIdle(isIdle:Bool)
 }
 
 enum RunType:Int {
@@ -49,9 +54,8 @@ enum RunType:Int {
 
 struct RunSetup {
   var unitSystem:Bool
-  var voiceFeedback:Bool
+  var voiceFeedback:RunType
   var goalType:RunType
-  var distanceType:RunType
   var goalValue:Bool
 }
 
@@ -70,8 +74,8 @@ class RaceTracker: NSObject {
   private var voiceTime = 0
   private var nextVoiceTime = 0
   private var hasGoal : Bool
-  private var distanceGoal : Distance
-  private var distance : Distance = 0.0
+  private var goalValue : Int
+  private var distance : Double = 0.0
   private let updateInterval:Int16 = 3
   private let locationManager = CLLocationManager()
   private var paused = false
@@ -86,8 +90,8 @@ class RaceTracker: NSObject {
   // Milestones are references to each mile or kilometer completed.
   private var metricMilestone = Array<Int>()
   private var royalMilestone = Array<Int>()
-  private var locationQueue = Array<Location>()
-  private var currentRun = Array<Location>()
+  private var locationQueue = Array<CLLocation>()
+  private var currentRun = Array<CLLocation>()
   private var currentRunMetadata = Array<RunMetaData>()
   
   private var timer : NSTimer?
@@ -104,7 +108,7 @@ class RaceTracker: NSObject {
     metric = setup.unitSystem
     hasGoal = false
     voiceFeedback = setup.voiceFeedback
-    distanceGoal = setup.goalType
+    goalValue = 1
     conversion = metric == true ? 1000.0 : 1609.0
     feedbackDistance = 1000.0
     super.init()
@@ -116,13 +120,13 @@ class RaceTracker: NSObject {
     locationManager.activityType = .Fitness
     
   }
-  func setup(metric:Bool, distance:Distance?, feedbackType:Int, feedbackValue:Int) {
+  func setup(metric:Bool, distance:Double?, feedbackType:Int, feedbackValue:Int) {
     if distance != nil {
       hasGoal = true
-      distanceGoal = metric ? distance! : (distance! * 1.609)
-      print("Distance goal set @ \(distanceGoal)")
+      goalValue = Int(metric ? distance! : (distance! * 1.609))
+      print("Distance goal set @ \(goalValue)")
     } else {
-      distanceGoal = 0
+      goalValue = 0
       hasGoal = false
     }
     if feedbackType == 1 {
@@ -167,7 +171,6 @@ class RaceTracker: NSObject {
     idle(true)
     segment = segment + 1
     paused = false
-    print("Setting timer to \(tickInterval)")
     timer = NSTimer.scheduledTimerWithTimeInterval(oneSecond, target: self, selector: "tick", userInfo: nil, repeats: true)
     needsResumePosition = true
     
@@ -183,7 +186,7 @@ class RaceTracker: NSObject {
     
   }
   func idle(isIdle:Bool) {
-    UIApplication.sharedApplication().idleTimerDisabled = isIdle
+    delegate?.setIdle(isIdle)
   }
   //--------------------------------------------------
   // MARK: - Tracker Runloop
@@ -202,9 +205,9 @@ class RaceTracker: NSObject {
       locationQueue.removeAll(keepCapacity: true)
       evaluateAutopause(pace)
       if hasGoal && reachedMidlepoint() {
-        checkGoal()
+        checkgoalCompletion()
       } else if reachedNextFeedback() && midpoint == false {
-        delegate?.logString(sayFeedback())
+        delegate?.logDescriptionString(sayFeedback())
       }
       assert(currentRun.count == currentRunMetadata.count, "Run must have metadata")
       if (time % 60) == 0 && distance >= 800.0 {
@@ -220,14 +223,15 @@ class RaceTracker: NSObject {
   }
   
   private func reachedMidlepoint()->Bool {
-    if distance >= distanceGoal {
-      delegate?.goal(1.0)
+    let goal = Double(goalValue)
+    if distance >= goal {
+      delegate?.goalCompletion(1.0)
     } else {
-      delegate?.goal(CGFloat(distance / distanceGoal))
+      delegate?.goalCompletion(distance / goal)
     }
-    if !midpoint && distance > (distanceGoal / 2.0) {
+    if !midpoint && distance > (goal / 2.0) {
       midpoint = true
-      delegate?.logString(midpointFeedback())
+      delegate?.logDescriptionString(midpointFeedback())
     } else if midpoint == true {
       return true
     }
@@ -270,7 +274,7 @@ class RaceTracker: NSObject {
     }
   }
   var consecutiveHeadingCount = 0
-  private func calculateDistanceFrom(priorLocation: Location, newLocation: Location)->Distance{
+  private func calculateDistanceFrom(priorLocation: CLLocation, newLocation: CLLocation)->Double {
     let locationCount = currentRun.count
     var distanceToAdd = 0.0
     if consecutiveHeadingCount > 0 {
@@ -316,18 +320,19 @@ class RaceTracker: NSObject {
   private var midpoint = false
   private var completed = false
   private var almostThere = false
-  private func checkGoal() {
+  private func checkgoalCompletion() {
     let reachedNext = reachedNextFeedback()
-    if !completed && midpoint && !almostThere && (distanceGoal - distance) < 120 {
+    let goal = Double(goalValue)
+    if !completed && midpoint && !almostThere && (goal - distance) < 120 {
       almostThere = true
-      delegate?.logString(almostThereFeedback())
-    } else if almostThere && !completed && distance > distanceGoal {
+      delegate?.logDescriptionString(almostThereFeedback())
+    } else if almostThere && !completed && distance > goal {
       completed = true
-      delegate?.logString(goalAchievedFeedback())
+      delegate?.logDescriptionString(goalAchievedFeedback())
     } else if midpoint && !completed && reachedNext {
-      delegate?.logString(decrementalFeedback())
+      delegate?.logDescriptionString(decrementalFeedback())
     } else if reachedNext {
-      delegate?.logString(sayFeedback())
+      delegate?.logDescriptionString(sayFeedback())
     }
   }
   
@@ -385,8 +390,6 @@ class RaceTracker: NSObject {
     case "es-ES", "es-MX":
       print("Setup spanish speaker")
       setLanguage(RunSpanishSpeaker())
-      speak.unitSystem = metric
-      speaker = speak
     case "it-IT":
       setLanguage(RunItalianSpeaker())
     case "ja-JP":
@@ -406,12 +409,51 @@ class RaceTracker: NSObject {
     default:
       print("Setup english speaker")
       setLanguage(RunEnglishSpeaker())
-      speak.unitSystem = metric
     }
   }
   func setLanguage(speakerLanguage:RunTrackerSpeechLanguageProvider) {
-    self.speaker = speakerLanguage
+    speaker = speakerLanguage
   }
+  
+  func convertTimeToTimeStructure(time:Int)->TimeStructure {
+    if time < 60 {
+      return TimeStructure(hours:0, minutes: 0, seconds: time)
+    } else {
+      let seconds = time % 60
+      let minutes = Int(Double(time) / 60.0)
+      if time < 3600 {
+        return TimeStructure(hours: 0, minutes: minutes, seconds: seconds)
+      } else {
+        
+        let  _mins = minutes % 60
+        return TimeStructure(hours: Int(minutes / 60), minutes: _mins, seconds: seconds)
+      }
+    }
+  }
+  func convertDistanceToDistanceStructure(distance:Double, conversion:Double)->DistanceStructure {
+    if distance >= conversion {
+      let _mainUnit = distance / conversion
+      let mainUnit = Int(_mainUnit)
+      let enMiles = distance % conversion
+      let _secondaryUnit = Int(enMiles / (conversion / 100.0))
+      return DistanceStructure(firstUnit:mainUnit, secondUnit: _secondaryUnit)
+    } else {
+      return DistanceStructure(firstUnit:0, secondUnit: Int(distance / (conversion / 100)))
+    }
+  }
+  func convertTimeAndDistanceToPaceStructure(time:Int, distance:Double, conversion:Double)->PaceStructure {
+    if distance < 30 || time < 10 {
+      return PaceStructure(0,0)
+    } else {
+      //    sfloat = (time / (distance > 0.0 ? distance : 1.0)) * ((@isMetric ? 1000.0 : 1609.0) / 60.0)
+      //    sf2 = ((sfloat % (sfloat.to_i > 0 ? sfloat.to_i : 1)) * 60.0).to_i
+      let averagePaceFloat = (Double(time) / distance) * (conversion / 60.0)
+      let firstUnit = Int(averagePaceFloat)
+      let secondDigit = (averagePaceFloat % (Double(firstUnit) > 0.0 ? Double(firstUnit) : 1.0)) * 60.0
+      return PaceStructure(firstUnit,Int(secondDigit))
+    }
+  }
+
 }
 
 extension RaceTracker: CLLocationManagerDelegate {

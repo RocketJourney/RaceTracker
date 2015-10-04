@@ -28,6 +28,12 @@
 		94053A031BC0C43A003E50BE /* RunSpanishSpeaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940539F81BC0C43A003E50BE /* RunSpanishSpeaker.swift */; settings = {ASSET_TAGS = (); }; };
 		94053A051BC16461003E50BE /* RunningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94053A041BC16461003E50BE /* RunningViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		94053A081BC164B9003E50BE /* GoRunningSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94053A071BC164B9003E50BE /* GoRunningSegue.swift */; settings = {ASSET_TAGS = (); }; };
+		94823E2C1BC1813C007F6A0D /* RaceCoordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94823E2B1BC1813C007F6A0D /* RaceCoordinate.swift */; settings = {ASSET_TAGS = (); }; };
+		94823E2F1BC18A12007F6A0D /* RunSettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94823E2E1BC18A12007F6A0D /* RunSettingsController.swift */; settings = {ASSET_TAGS = (); }; };
+		94823E311BC18A49007F6A0D /* GoRunSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94823E301BC18A49007F6A0D /* GoRunSettings.swift */; settings = {ASSET_TAGS = (); }; };
+		94823E341BC18DD6007F6A0D /* RunDistancePickerProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94823E331BC18DD6007F6A0D /* RunDistancePickerProvider.swift */; settings = {ASSET_TAGS = (); }; };
+		94823E361BC18DEE007F6A0D /* RunTimePickerProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94823E351BC18DEE007F6A0D /* RunTimePickerProvider.swift */; settings = {ASSET_TAGS = (); }; };
+		94823E3A1BC18E33007F6A0D /* Run.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94823E391BC18E33007F6A0D /* Run.swift */; settings = {ASSET_TAGS = (); }; };
 		FE55021BFB5A87F7BE049566 /* Pods_RaceTracker_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 417E792206A235EB6E65F2FC /* Pods_RaceTracker_Example.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
@@ -58,7 +64,7 @@
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
 		6B553E22A60BF552B613BD20 /* Pods-RaceTracker_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RaceTracker_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RaceTracker_Example/Pods-RaceTracker_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		88EC8A73DDA713E13305DBE2 /* Pods-RaceTracker_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RaceTracker_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RaceTracker_Tests/Pods-RaceTracker_Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		940539EB1BC0BF65003E50BE /* RaceTracker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RaceTracker.swift; sourceTree = "<group>"; };
+		940539EB1BC0BF65003E50BE /* RaceTracker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RaceTracker.swift; path = ../../Source/RaceTracker.swift; sourceTree = "<group>"; };
 		940539EE1BC0C43A003E50BE /* RunCantoneseSpeaker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunCantoneseSpeaker.swift; sourceTree = "<group>"; };
 		940539EF1BC0C43A003E50BE /* RunDutchSpeaker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunDutchSpeaker.swift; sourceTree = "<group>"; };
 		940539F01BC0C43A003E50BE /* RunEnglishSpeaker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunEnglishSpeaker.swift; sourceTree = "<group>"; };
@@ -72,6 +78,12 @@
 		940539F81BC0C43A003E50BE /* RunSpanishSpeaker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunSpanishSpeaker.swift; sourceTree = "<group>"; };
 		94053A041BC16461003E50BE /* RunningViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunningViewController.swift; sourceTree = "<group>"; };
 		94053A071BC164B9003E50BE /* GoRunningSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoRunningSegue.swift; sourceTree = "<group>"; };
+		94823E2B1BC1813C007F6A0D /* RaceCoordinate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RaceCoordinate.swift; path = ../../Source/RaceCoordinate.swift; sourceTree = "<group>"; };
+		94823E2E1BC18A12007F6A0D /* RunSettingsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunSettingsController.swift; sourceTree = "<group>"; };
+		94823E301BC18A49007F6A0D /* GoRunSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoRunSettings.swift; sourceTree = "<group>"; };
+		94823E331BC18DD6007F6A0D /* RunDistancePickerProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunDistancePickerProvider.swift; sourceTree = "<group>"; };
+		94823E351BC18DEE007F6A0D /* RunTimePickerProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunTimePickerProvider.swift; sourceTree = "<group>"; };
+		94823E391BC18E33007F6A0D /* Run.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Run.swift; sourceTree = "<group>"; };
 		B20C39D2261318045EAFC173 /* RaceTracker.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = RaceTracker.podspec; path = ../RaceTracker.podspec; sourceTree = "<group>"; };
 		BB757844CB7B399526C8A69A /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		BE9E601D70827E8906705F31 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
@@ -130,13 +142,15 @@
 		607FACD21AFB9204008FA782 /* Example for RaceTracker */ = {
 			isa = PBXGroup;
 			children = (
+				94823E2A1BC17FC1007F6A0D /* utils */,
 				94053A061BC164A6003E50BE /* controllers */,
+				94823E321BC18DB8007F6A0D /* models */,
+				94823E2D1BC18150007F6A0D /* segues */,
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
-				94053A071BC164B9003E50BE /* GoRunningSegue.swift */,
 			);
 			name = "Example for RaceTracker";
 			path = RaceTracker;
@@ -170,11 +184,9 @@
 		607FACF51AFB993E008FA782 /* Podspec Metadata */ = {
 			isa = PBXGroup;
 			children = (
-				940539ED1BC0C411003E50BE /* Language */,
 				B20C39D2261318045EAFC173 /* RaceTracker.podspec */,
 				BB757844CB7B399526C8A69A /* README.md */,
 				BE9E601D70827E8906705F31 /* LICENSE */,
-				940539EB1BC0BF65003E50BE /* RaceTracker.swift */,
 			);
 			name = "Podspec Metadata";
 			sourceTree = "<group>";
@@ -206,15 +218,62 @@
 				940539F81BC0C43A003E50BE /* RunSpanishSpeaker.swift */,
 			);
 			name = Language;
+			path = ../../Source;
 			sourceTree = "<group>";
 		};
 		94053A061BC164A6003E50BE /* controllers */ = {
 			isa = PBXGroup;
 			children = (
+				94823E2E1BC18A12007F6A0D /* RunSettingsController.swift */,
 				607FACD71AFB9204008FA782 /* ViewController.swift */,
 				94053A041BC16461003E50BE /* RunningViewController.swift */,
 			);
 			name = controllers;
+			sourceTree = "<group>";
+		};
+		94823E2A1BC17FC1007F6A0D /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				940539EB1BC0BF65003E50BE /* RaceTracker.swift */,
+				94823E2B1BC1813C007F6A0D /* RaceCoordinate.swift */,
+				940539ED1BC0C411003E50BE /* Language */,
+			);
+			name = utils;
+			sourceTree = "<group>";
+		};
+		94823E2D1BC18150007F6A0D /* segues */ = {
+			isa = PBXGroup;
+			children = (
+				94053A071BC164B9003E50BE /* GoRunningSegue.swift */,
+				94823E301BC18A49007F6A0D /* GoRunSettings.swift */,
+			);
+			name = segues;
+			sourceTree = "<group>";
+		};
+		94823E321BC18DB8007F6A0D /* models */ = {
+			isa = PBXGroup;
+			children = (
+				94823E381BC18E1D007F6A0D /* cache */,
+				94823E371BC18E0D007F6A0D /* providers */,
+			);
+			name = models;
+			sourceTree = "<group>";
+		};
+		94823E371BC18E0D007F6A0D /* providers */ = {
+			isa = PBXGroup;
+			children = (
+				94823E331BC18DD6007F6A0D /* RunDistancePickerProvider.swift */,
+				94823E351BC18DEE007F6A0D /* RunTimePickerProvider.swift */,
+			);
+			name = providers;
+			sourceTree = "<group>";
+		};
+		94823E381BC18E1D007F6A0D /* cache */ = {
+			isa = PBXGroup;
+			children = (
+				94823E391BC18E33007F6A0D /* Run.swift */,
+			);
+			name = cache;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -419,16 +478,22 @@
 			files = (
 				94053A031BC0C43A003E50BE /* RunSpanishSpeaker.swift in Sources */,
 				94053A051BC16461003E50BE /* RunningViewController.swift in Sources */,
+				94823E2C1BC1813C007F6A0D /* RaceCoordinate.swift in Sources */,
+				94823E311BC18A49007F6A0D /* GoRunSettings.swift in Sources */,
 				940539FB1BC0C43A003E50BE /* RunEnglishSpeaker.swift in Sources */,
 				940539F91BC0C43A003E50BE /* RunCantoneseSpeaker.swift in Sources */,
 				940539FC1BC0C43A003E50BE /* RunFrenchSpeaker.swift in Sources */,
+				94823E341BC18DD6007F6A0D /* RunDistancePickerProvider.swift in Sources */,
 				940539FD1BC0C43A003E50BE /* RunGermanSpeaker.swift in Sources */,
+				94823E3A1BC18E33007F6A0D /* Run.swift in Sources */,
 				940539FE1BC0C43A003E50BE /* RunGreekSpeaker.swift in Sources */,
 				940539EC1BC0BF65003E50BE /* RaceTracker.swift in Sources */,
 				940539FF1BC0C43A003E50BE /* RunItalianSpeaker.swift in Sources */,
 				940539FA1BC0C43A003E50BE /* RunDutchSpeaker.swift in Sources */,
+				94823E361BC18DEE007F6A0D /* RunTimePickerProvider.swift in Sources */,
 				94053A001BC0C43A003E50BE /* RunJapanneseSpeaker.swift in Sources */,
 				94053A011BC0C43A003E50BE /* RunMandarinSpeaker.swift in Sources */,
+				94823E2F1BC18A12007F6A0D /* RunSettingsController.swift in Sources */,
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
 				94053A021BC0C43A003E50BE /* RunPortugueseSpeaker.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
