@@ -56,7 +56,7 @@ struct RunSetup {
   var unitSystem:Bool
   var voiceFeedback:RunType
   var goalType:RunType
-  var goalValue:Bool
+  var goalValue:Int
 }
 
 class RaceTracker: NSObject {
@@ -96,7 +96,7 @@ class RaceTracker: NSObject {
   
   private var timer : NSTimer?
   private var timeSinceUnpause = NSDate.timeIntervalSinceReferenceDate()
-  private var needsResumePosition = false
+  private var noComparePoint = false
   private var pace = 0.0
   
   var delegate : RaceTrackerDelegate?
@@ -118,6 +118,7 @@ class RaceTracker: NSObject {
     locationManager.distanceFilter = kCLDistanceFilterNone
     locationManager.desiredAccuracy = kCLLocationAccuracyBest
     locationManager.activityType = .Fitness
+    //setup(metric, distance: (), feedbackType: <#T##Int#>, feedbackValue: <#T##Int#>)
     
   }
   func setup(metric:Bool, distance:Double?, feedbackType:Int, feedbackValue:Int) {
@@ -172,7 +173,7 @@ class RaceTracker: NSObject {
     segment = segment + 1
     paused = false
     timer = NSTimer.scheduledTimerWithTimeInterval(oneSecond, target: self, selector: "tick", userInfo: nil, repeats: true)
-    needsResumePosition = true
+    noComparePoint = true
     
   }
   func pauseRun() {
@@ -197,29 +198,45 @@ class RaceTracker: NSObject {
       return
     }
     time += 1
-    if needsResumePosition {
-      needsResumePosition = false
+    if noComparePoint {
+      noComparePoint = false
       return
-    } else if locationQueue.count > 0 && (time % kCalcPeriod) == 0 {
-      calculateMetrics()
-      locationQueue.removeAll(keepCapacity: true)
-      evaluateAutopause(pace)
-      if hasGoal && reachedMidlepoint() {
-        checkgoalCompletion()
-      } else if reachedNextFeedback() && midpoint == false {
-        delegate?.logDescriptionString(sayFeedback())
-      }
-      assert(currentRun.count == currentRunMetadata.count, "Run must have metadata")
-      if (time % 60) == 0 && distance >= 800.0 {
-        if let runDiff = getRunDiff() {
-          print("Caching run @ \(time) seconds distance \(distance)")
-          delegate?.cacheRun(distance, time: time, calories: calories, elevation: elevation, coordinates: runDiff, metricMilestones:[0], royalMilestones:[0])
-        }
-      }
+    } else if delayedUpdate {
+      updateMetrics()
     } else {
       evaluateAutopause(-1.0)
     }
     delegate?.updateViews(getTime(), distance: getDistance(), pace: getPace(), percent:0.5)
+  }
+  private var delayedCache:Bool {
+    get {
+      return (time % 60) == 0 && distance >= 800.0
+    }
+  }
+  private var delayedUpdate:Bool {
+    get {
+      return locationQueue.count > 0 && (time % kCalcPeriod) == 0
+    }
+  }
+  private func updateMetrics() {
+    calculateMetrics()
+    locationQueue.removeAll(keepCapacity: true)
+    evaluateAutopause(pace)
+    checkGoalAndFeedback()
+    if delayedCache { cacheRun() }
+  }
+  private func cacheRun() {
+    if let runDiff = getRunDiff() {
+      print("Caching run @ \(time) seconds distance \(distance)")
+      delegate?.cacheRun(distance, time: time, calories: calories, elevation: elevation, coordinates: runDiff, metricMilestones:[0], royalMilestones:[0])
+    }
+  }
+  private func checkGoalAndFeedback() {
+    if hasGoal && reachedMidlepoint() {
+      checkgoalCompletion()
+    } else if reachedNextFeedback() && midpoint == false {
+      delegate?.logDescriptionString(sayFeedback())
+    }
   }
   
   private func reachedMidlepoint()->Bool {
@@ -462,8 +479,8 @@ extension RaceTracker: CLLocationManagerDelegate {
   //--------------------------------------------------
   func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
     if let lastLocation = locations.last  {
-      if needsResumePosition {
-        needsResumePosition = false
+      if noComparePoint {
+        noComparePoint = false
         currentRunMetadata.append(RunMetaData(pace: 0.0, segment: segment, time: time))
         currentRun.append(lastLocation)
       } else {

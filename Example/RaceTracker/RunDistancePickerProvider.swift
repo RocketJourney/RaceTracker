@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-typealias UpdateValueBlock = (value:Double)->()
+typealias UpdateValueBlock = (value:Int)->()
 class RunDistancePickerProvider:NSObject, UIPickerViewDelegate, UIPickerViewDataSource {
   required init(units:Bool) {
     unitSystem = units
@@ -35,8 +35,7 @@ class RunDistancePickerProvider:NSObject, UIPickerViewDelegate, UIPickerViewData
   }
   
   func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-    let value = data[row]
-    updateValue!(value: (value * 1000.0) * (unitSystem ? 1.0 : 1.609))
+    updateValue!(value: row)
   }
   
   func pickerView(pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {

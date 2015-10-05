@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 
 class RunTimePickerProvider:NSObject, UIPickerViewDelegate, UIPickerViewDataSource {
+  var updateValue:UpdateValueBlock?
   private let minutes = 30
   func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
     return 1

@@ -33,4 +33,31 @@ class Preferences {
       NSUserDefaults.standardUserDefaults().setBool(value, forKey: kUnitSystem)
     }
   }
+  private let lastDistance = "kLastDistance"
+  var lastDistanceSelected:Int {
+    get {
+      return NSUserDefaults.standardUserDefaults().integerForKey(lastDistance)
+    }
+    set(value) {
+      NSUserDefaults.standardUserDefaults().setInteger(value, forKey: lastDistance)
+    }
+  }
+  private let lastTime = "kLastTime"
+  var lastTimeSelected:Int {
+    get {
+      return NSUserDefaults.standardUserDefaults().integerForKey(lastTime)
+    }
+    set(value) {
+      NSUserDefaults.standardUserDefaults().setInteger(value, forKey: lastTime)
+    }
+  }
+  private let voiceFeedback = "kVoiceFeedback"
+  var voiceFeedbackEnabled:Int {
+    get {
+      return NSUserDefaults.standardUserDefaults().integerForKey(voiceFeedback)
+    }
+    set(value) {
+      NSUserDefaults.standardUserDefaults().setInteger(value, forKey: voiceFeedback)
+    }
+  }
 }
