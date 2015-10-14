@@ -12,10 +12,12 @@ import CoreLocation
 class ViewController: UIViewController {
   var locationManager = CLLocationManager()
   private var unitSystem:Bool
+  private var unitString:String
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
     unitSystem = Preferences.instance.unitSystem
     distanceProvider = RunDistancePickerProvider(units: unitSystem)
     timeProvider = RunTimePickerProvider()
+    unitString = unitSystem ? "km" : "mi"
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     distanceProvider.updateValue = { value in
       self.updatedDistance(value)
@@ -29,6 +31,7 @@ class ViewController: UIViewController {
     unitSystem = Preferences.instance.unitSystem
     distanceProvider = RunDistancePickerProvider(units: unitSystem)
     timeProvider = RunTimePickerProvider()
+    unitString = unitSystem ? "km" : "mi"
     super.init(coder: aDecoder)
     distanceProvider.updateValue = { value in
       self.updatedDistance(value)
@@ -76,20 +79,37 @@ class ViewController: UIViewController {
     distancePickerView.dataSource = distanceProvider
     timePickerView.delegate = timeProvider
     timePickerView.dataSource = timeProvider
+    distancePickerView.selectRow(Preferences.instance.lastDistanceSelected, inComponent: 0, animated: false)
+    timePickerView.selectRow(Preferences.instance.lastTimeSelected, inComponent: 0, animated: false)
   }
+  
   private func setupLastSelected() {
     let lastSelected = Preferences.instance.lastRunType
     segmentControl.selectedSegmentIndex = lastSelected
     changeTo(lastSelected)
+    setupFeedbackBtn()
   }
+  private func setupFeedbackBtn() {
+    let prefs = Preferences.instance
+    let feedbackType = prefs.voiceFeedbackEnabled
+    let feedbackValue = prefs.voiceFeedbackValue
+    updateFeedbackLabel(feedbackType, value: feedbackValue)
+  }
+  
+  private func setFeedbackTitle(string:String) {
+    feedbackBtn.setTitle(string, forState: .Normal)
+  }
+  
   private func setupStyle() {
     goBtn.layer.cornerRadius = goBtn.frame.size.height / 2
     goBtn.layer.masksToBounds = true
   }
+  
   @IBAction func goSettings(sender: AnyObject) {
     UIApplication.sharedApplication().openURL(NSURL(string: UIApplicationOpenSettingsURLString)!)
 
   }
+  
   func setupGps() {
     let status = CLLocationManager.authorizationStatus()
     switch status {
@@ -139,10 +159,29 @@ class ViewController: UIViewController {
 
 extension ViewController:RunSettingsDelegate {
   func updateUnitSystem(unitSystem:Bool) {
-    
+    unitString = unitSystem ? "km" : "mi"
+    self.unitSystem = unitSystem
+    setupFeedbackBtn()
   }
-  func updateFeedbackSettings() {
-    
+  func updateFeedbackLabel(type:Int, value:Int) {
+    switch type {
+    case 0: setFeedbackTitle("No Music")
+    case 1:
+      switch value {
+      case 0: setFeedbackTitle("1.0 \(unitString)")
+      case 1: setFeedbackTitle("1.5 \(unitString)")
+      case 2: setFeedbackTitle("2.0 \(unitString)")
+      default: break
+      }
+    case 2:
+      switch value {
+      case 0: setFeedbackTitle("5:00 min")
+      case 1: setFeedbackTitle("10:00 min")
+      case 2: setFeedbackTitle("15:00 min")
+      default: break
+      }
+    default: break
+    }
   }
 }
 

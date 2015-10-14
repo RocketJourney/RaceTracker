@@ -29,7 +29,7 @@ class RunTimePickerProvider:NSObject, UIPickerViewDelegate, UIPickerViewDataSour
     return view
   }
   func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-    
+    updateValue?(value: row)
   }
   
   func pickerView(pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {

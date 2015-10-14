@@ -60,4 +60,13 @@ class Preferences {
       NSUserDefaults.standardUserDefaults().setInteger(value, forKey: voiceFeedback)
     }
   }
+  private let kVoiceFeedbackValue = "kvoiceFeedbackValue"
+  var voiceFeedbackValue:Int {
+    get {
+      return NSUserDefaults.standardUserDefaults().integerForKey(kVoiceFeedbackValue)
+    }
+    set(value) {
+      NSUserDefaults.standardUserDefaults().setInteger(value, forKey: kVoiceFeedbackValue)
+    }
+  }
 }

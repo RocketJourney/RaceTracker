@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="15B17c" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="QWR-Qc-QiO">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="QWR-Qc-QiO">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
@@ -118,9 +118,9 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M3R-LB-BPC">
                                         <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                         <animations/>
-                                        <color key="backgroundColor" red="0.08847403060869885" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="32" id="7rU-dp-8e6"/>
+                                            <constraint firstAttribute="height" constant="62" id="7rU-dp-8e6"/>
                                         </constraints>
                                         <state key="normal" title="Go!">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -249,11 +249,11 @@
                                         <exclude reference="IZa-Th-aYa"/>
                                     </mask>
                                     <mask key="constraints">
-                                        <exclude reference="eaE-fR-zLZ"/>
-                                        <exclude reference="gyV-GI-gXK"/>
                                         <exclude reference="2Jv-6j-Knc"/>
                                         <exclude reference="C9j-yv-4Jx"/>
                                         <exclude reference="zyc-3O-ubT"/>
+                                        <exclude reference="eaE-fR-zLZ"/>
+                                        <exclude reference="gyV-GI-gXK"/>
                                     </mask>
                                 </variation>
                                 <variation key="heightClass=regular-widthClass=compact">
@@ -262,11 +262,11 @@
                                         <include reference="IZa-Th-aYa"/>
                                     </mask>
                                     <mask key="constraints">
-                                        <include reference="eaE-fR-zLZ"/>
-                                        <include reference="gyV-GI-gXK"/>
                                         <include reference="2Jv-6j-Knc"/>
                                         <include reference="C9j-yv-4Jx"/>
                                         <include reference="zyc-3O-ubT"/>
+                                        <include reference="eaE-fR-zLZ"/>
+                                        <include reference="gyV-GI-gXK"/>
                                     </mask>
                                 </variation>
                             </view>
@@ -304,16 +304,16 @@
                                 <exclude reference="MBD-md-cAK"/>
                                 <exclude reference="YDb-5d-ZHn"/>
                                 <exclude reference="fX3-1P-QlM"/>
-                                <exclude reference="92w-v6-9jA"/>
-                                <exclude reference="cWq-mC-I8q"/>
-                                <exclude reference="d0M-48-wcN"/>
+                                <exclude reference="Lxe-qw-0mE"/>
+                                <exclude reference="fsQ-2B-7r1"/>
+                                <exclude reference="hbv-47-cYE"/>
                                 <exclude reference="8pV-H1-zmj"/>
                                 <exclude reference="MCS-30-724"/>
                                 <exclude reference="R0x-hV-Dv7"/>
                                 <exclude reference="sHh-yB-r8z"/>
-                                <exclude reference="Lxe-qw-0mE"/>
-                                <exclude reference="fsQ-2B-7r1"/>
-                                <exclude reference="hbv-47-cYE"/>
+                                <exclude reference="92w-v6-9jA"/>
+                                <exclude reference="cWq-mC-I8q"/>
+                                <exclude reference="d0M-48-wcN"/>
                                 <exclude reference="SPb-IC-BgO"/>
                             </mask>
                         </variation>
@@ -328,16 +328,16 @@
                                 <include reference="MBD-md-cAK"/>
                                 <include reference="YDb-5d-ZHn"/>
                                 <include reference="fX3-1P-QlM"/>
-                                <include reference="92w-v6-9jA"/>
-                                <include reference="cWq-mC-I8q"/>
-                                <include reference="d0M-48-wcN"/>
+                                <include reference="Lxe-qw-0mE"/>
+                                <include reference="fsQ-2B-7r1"/>
+                                <include reference="hbv-47-cYE"/>
                                 <include reference="8pV-H1-zmj"/>
                                 <include reference="MCS-30-724"/>
                                 <include reference="R0x-hV-Dv7"/>
                                 <include reference="sHh-yB-r8z"/>
-                                <include reference="Lxe-qw-0mE"/>
-                                <include reference="fsQ-2B-7r1"/>
-                                <include reference="hbv-47-cYE"/>
+                                <include reference="92w-v6-9jA"/>
+                                <include reference="cWq-mC-I8q"/>
+                                <include reference="d0M-48-wcN"/>
                                 <include reference="SPb-IC-BgO"/>
                             </mask>
                         </variation>
@@ -365,13 +365,17 @@
             <objects>
                 <tableViewController id="ZJX-1z-4Ri" customClass="RunSettingsController" customModule="RaceTracker_Example" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="4Do-gu-K5d">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="separatorColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="ZFJ-ES-Qdc">
+                                <rect key="frame" x="0.0" y="28" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ZFJ-ES-Qdc" id="YX9-70-H7Q">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <animations/>
                                 </tableViewCellContentView>
@@ -391,15 +395,16 @@
             </objects>
             <point key="canvasLocation" x="739.5" y="1047"/>
         </scene>
-        <!--View Controller-->
+        <!--Run Pace Oscilate Controller-->
         <scene sceneID="yxp-R8-hHv">
             <objects>
-                <viewController id="I7C-ij-qsg" sceneMemberID="viewController">
+                <viewController id="I7C-ij-qsg" customClass="RunPaceOscilateController" customModule="RaceTracker_Example" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="u5u-wJ-Oqq"/>
                         <viewControllerLayoutGuide type="bottom" id="QWk-4j-wfC"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="wNU-Al-aM0">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -509,19 +514,19 @@
                                 <exclude reference="FhG-tL-la7"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="H2p-gc-FQK"/>
-                                <exclude reference="MXx-km-2Pi"/>
-                                <exclude reference="uoC-fa-tNu"/>
-                                <exclude reference="Pjk-cX-Qdn"/>
-                                <exclude reference="oaZ-xD-dbY"/>
-                                <exclude reference="BcG-PQ-DRo"/>
-                                <exclude reference="tck-eD-o0c"/>
-                                <exclude reference="ppw-k4-vkt"/>
-                                <exclude reference="rNI-XB-27M"/>
                                 <exclude reference="CoW-Cr-HrZ"/>
                                 <exclude reference="DiE-lm-nqY"/>
                                 <exclude reference="EoR-5c-uZE"/>
                                 <exclude reference="JWF-kO-8Vx"/>
+                                <exclude reference="H2p-gc-FQK"/>
+                                <exclude reference="MXx-km-2Pi"/>
+                                <exclude reference="uoC-fa-tNu"/>
+                                <exclude reference="BcG-PQ-DRo"/>
+                                <exclude reference="tck-eD-o0c"/>
+                                <exclude reference="ppw-k4-vkt"/>
+                                <exclude reference="rNI-XB-27M"/>
+                                <exclude reference="Pjk-cX-Qdn"/>
+                                <exclude reference="oaZ-xD-dbY"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
@@ -533,19 +538,19 @@
                                 <include reference="FhG-tL-la7"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="H2p-gc-FQK"/>
-                                <include reference="MXx-km-2Pi"/>
-                                <include reference="uoC-fa-tNu"/>
-                                <include reference="Pjk-cX-Qdn"/>
-                                <include reference="oaZ-xD-dbY"/>
-                                <include reference="BcG-PQ-DRo"/>
-                                <include reference="tck-eD-o0c"/>
-                                <include reference="ppw-k4-vkt"/>
-                                <include reference="rNI-XB-27M"/>
                                 <include reference="CoW-Cr-HrZ"/>
                                 <include reference="DiE-lm-nqY"/>
                                 <include reference="EoR-5c-uZE"/>
                                 <include reference="JWF-kO-8Vx"/>
+                                <include reference="H2p-gc-FQK"/>
+                                <include reference="MXx-km-2Pi"/>
+                                <include reference="uoC-fa-tNu"/>
+                                <include reference="BcG-PQ-DRo"/>
+                                <include reference="tck-eD-o0c"/>
+                                <include reference="ppw-k4-vkt"/>
+                                <include reference="rNI-XB-27M"/>
+                                <include reference="Pjk-cX-Qdn"/>
+                                <include reference="oaZ-xD-dbY"/>
                             </mask>
                         </variation>
                     </view>
