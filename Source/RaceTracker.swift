@@ -38,6 +38,7 @@ public protocol RaceTrackerDelegate {
   func updateViews(time: TimeStructure, distance: DistanceStructure, pace: PaceStructure, percent:Float)
   func logDescriptionString(string:String)
   func goalCompletion(percent:Double)
+  func setIdle(isIdle:Bool)
   func cacheRun(distance:Double,
     time:Int,
     calories:Int,
@@ -45,7 +46,6 @@ public protocol RaceTrackerDelegate {
     metricMilestones:Array<Int>,
     royalMilestones:Array<Int>,
     coordinates:Array<RaceCoordinate>)
-  func setIdle(isIdle:Bool)
 }
 
 public enum RunType:Int {
@@ -395,7 +395,7 @@ public class RaceTracker: NSObject {
     return locArr
   }
   
-  func finishRun() {
+  public func finishRun() {
     if let runDiff = getRunDiff() {
       delegate?.cacheRun(distance, time: time, calories: calories, elevation: elevation, metricMilestones:[0], royalMilestones:[0], coordinates: runDiff)
     }
