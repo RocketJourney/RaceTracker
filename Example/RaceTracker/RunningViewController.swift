@@ -124,7 +124,7 @@ extension RunningViewController:RaceTrackerDelegate {
     elevation:Double,
     metricMilestones:Array<Int>,
     royalMilestones:Array<Int>,
-    coordinates:Array<RaceCoordinate>) -> () {
+    coordinates:Array<Coordinate>) -> () {
       
   }
   func goalCompletion(percent:Double) {

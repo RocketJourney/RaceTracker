@@ -16,7 +16,6 @@
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
 		94053A051BC16461003E50BE /* RunningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94053A041BC16461003E50BE /* RunningViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		94053A081BC164B9003E50BE /* GoRunningSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94053A071BC164B9003E50BE /* GoRunningSegue.swift */; settings = {ASSET_TAGS = (); }; };
-		94823E2C1BC1813C007F6A0D /* RaceCoordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94823E2B1BC1813C007F6A0D /* RaceCoordinate.swift */; settings = {ASSET_TAGS = (); }; };
 		94823E2F1BC18A12007F6A0D /* RunSettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94823E2E1BC18A12007F6A0D /* RunSettingsController.swift */; settings = {ASSET_TAGS = (); }; };
 		94823E311BC18A49007F6A0D /* GoRunSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94823E301BC18A49007F6A0D /* GoRunSettings.swift */; settings = {ASSET_TAGS = (); }; };
 		94823E341BC18DD6007F6A0D /* RunDistancePickerProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94823E331BC18DD6007F6A0D /* RunDistancePickerProvider.swift */; settings = {ASSET_TAGS = (); }; };
@@ -472,7 +471,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				94053A051BC16461003E50BE /* RunningViewController.swift in Sources */,
-				94823E2C1BC1813C007F6A0D /* RaceCoordinate.swift in Sources */,
 				94C543C41BCF556400DE9154 /* Speaker.swift in Sources */,
 				94823E401BC1E2CC007F6A0D /* UIView+extensions.swift in Sources */,
 				94823E311BC18A49007F6A0D /* GoRunSettings.swift in Sources */,

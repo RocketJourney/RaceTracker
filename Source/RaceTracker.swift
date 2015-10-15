@@ -24,7 +24,7 @@ public typealias TimeStructure = (hours:Int, minutes:Int, seconds:Int)
 public typealias DistanceStructure = (firstUnit:Int, secondUnit:Int)
 public typealias PaceStructure = (firstUnit:Int, secondUnit:Int)
 
-public typealias RaceCoordinate = (longitude:Double, latitude:Double, altitude: Double, pace: Double, section:Int, position:Int)
+public typealias Coordinate = (longitude:Double, latitude:Double, altitude: Double, pace: Double, section:Int, position:Int)
 
 public protocol RunTrackerSpeechLanguageProvider {
   func sayFeedback(time:TimeStructure, distance:DistanceStructure, pace:PaceStructure)->String
@@ -45,7 +45,7 @@ public protocol RaceTrackerDelegate {
     elevation:Double,
     metricMilestones:Array<Int>,
     royalMilestones:Array<Int>,
-    coordinates:Array<RaceCoordinate>)
+    coordinates:Array<Coordinate>)
 }
 
 public enum RunType:Int {
@@ -382,12 +382,12 @@ public class RaceTracker: NSObject {
   
   //MARK: - Helpers
   
-  func getRunDiff()->Array<RaceCoordinate>? {
-    var locArr = [RaceCoordinate]()
+  func getRunDiff()->Array<Coordinate>? {
+    var locArr = [Coordinate]()
     for i in cachedToPosition..<currentRun.count {
       let currCoord = currentRun[i]
       let currCoordMeta = currentRunMetadata[i]
-      let storedLocation = RaceCoordinate(longitude: Double(currCoord.coordinate.longitude), latitude: Double(currCoord.coordinate.latitude),
+      let storedLocation = Coordinate(longitude: Double(currCoord.coordinate.longitude), latitude: Double(currCoord.coordinate.latitude),
         altitude: Double(currCoord.altitude), pace: pace, section: currCoordMeta.segment, position: cachedToPosition + i)
       locArr.append(storedLocation)
     }
