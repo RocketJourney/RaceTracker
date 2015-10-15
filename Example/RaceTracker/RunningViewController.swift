@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RaceTracker
 
 class RunningViewController:UIViewController {
   @IBOutlet weak var distanceLabel: UILabel!
@@ -117,18 +118,19 @@ extension RunningViewController:RaceTrackerDelegate {
     print(string)
     speaker.speak(string)
   }
-  func goalCompletion(percent:Double) {
-    slider.value = Float(percent)
-  }
   func cacheRun(distance:Double,
     time:Int,
     calories:Int,
     elevation:Double,
-    coordinates:[RaceCoordinate],
-    metricMilestones:[Int]?,
-    royalMilestones:[Int]?) {
+    metricMilestones:Array<Int>,
+    royalMilestones:Array<Int>,
+    coordinates:Array<RaceCoordinate>) -> () {
       
   }
+  func goalCompletion(percent:Double) {
+    slider.value = Float(percent)
+  }
+  
   func setIdle(isIdle:Bool) {
     
   }
