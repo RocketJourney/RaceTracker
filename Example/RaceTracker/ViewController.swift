@@ -66,6 +66,7 @@ class ViewController: UIViewController {
     setupLastSelected()
     setupStyle()
     setupGps()
+    updateUnitSystem(unitSystem)
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "setupGps", name: UIApplicationDidBecomeActiveNotification, object: nil)
   }
   
@@ -155,11 +156,13 @@ class ViewController: UIViewController {
     distanceRunView.hidden = true
     timeRunView.hidden = true
   }
+  @IBOutlet weak var unitLabel: UILabel!
 }
 
 extension ViewController:RunSettingsDelegate {
   func updateUnitSystem(unitSystem:Bool) {
     unitString = unitSystem ? "km" : "mi"
+    unitLabel.text = unitString
     self.unitSystem = unitSystem
     setupFeedbackBtn()
   }

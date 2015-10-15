@@ -38,6 +38,7 @@
 		94823E3E1BC1AFA3007F6A0D /* RunPaceOscilateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94823E3D1BC1AFA3007F6A0D /* RunPaceOscilateController.swift */; settings = {ASSET_TAGS = (); }; };
 		94823E401BC1E2CC007F6A0D /* UIView+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94823E3F1BC1E2CC007F6A0D /* UIView+extensions.swift */; settings = {ASSET_TAGS = (); }; };
 		94823E421BC1EE1D007F6A0D /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94823E411BC1EE1D007F6A0D /* MapKit.framework */; };
+		94C543C41BCF556400DE9154 /* Speaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94C543C31BCF556400DE9154 /* Speaker.swift */; settings = {ASSET_TAGS = (); }; };
 		FE55021BFB5A87F7BE049566 /* Pods_RaceTracker_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 417E792206A235EB6E65F2FC /* Pods_RaceTracker_Example.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
@@ -92,6 +93,7 @@
 		94823E3D1BC1AFA3007F6A0D /* RunPaceOscilateController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunPaceOscilateController.swift; sourceTree = "<group>"; };
 		94823E3F1BC1E2CC007F6A0D /* UIView+extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+extensions.swift"; sourceTree = "<group>"; };
 		94823E411BC1EE1D007F6A0D /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		94C543C31BCF556400DE9154 /* Speaker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Speaker.swift; sourceTree = "<group>"; };
 		B20C39D2261318045EAFC173 /* RaceTracker.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = RaceTracker.podspec; path = ../RaceTracker.podspec; sourceTree = "<group>"; };
 		BB757844CB7B399526C8A69A /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		BE9E601D70827E8906705F31 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
@@ -245,6 +247,7 @@
 		94823E2A1BC17FC1007F6A0D /* utils */ = {
 			isa = PBXGroup;
 			children = (
+				94C543C31BCF556400DE9154 /* Speaker.swift */,
 				940539EB1BC0BF65003E50BE /* RaceTracker.swift */,
 				94823E2B1BC1813C007F6A0D /* RaceCoordinate.swift */,
 				940539ED1BC0C411003E50BE /* Language */,
@@ -498,6 +501,7 @@
 				94053A031BC0C43A003E50BE /* RunSpanishSpeaker.swift in Sources */,
 				94053A051BC16461003E50BE /* RunningViewController.swift in Sources */,
 				94823E2C1BC1813C007F6A0D /* RaceCoordinate.swift in Sources */,
+				94C543C41BCF556400DE9154 /* Speaker.swift in Sources */,
 				94823E401BC1E2CC007F6A0D /* UIView+extensions.swift in Sources */,
 				94823E311BC18A49007F6A0D /* GoRunSettings.swift in Sources */,
 				940539FB1BC0C43A003E50BE /* RunEnglishSpeaker.swift in Sources */,

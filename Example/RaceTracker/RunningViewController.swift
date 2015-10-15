@@ -17,42 +17,46 @@ class RunningViewController:UIViewController {
   @IBOutlet weak var slider: UISlider!
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
     let preferences = Preferences.instance
+    let unitSystem = preferences.unitSystem
     let runType = RunType(rawValue: preferences.lastRunType)!
     var value:Int
     switch runType {
     case .None:
       value = 0
     case .Distance:
-      value = preferences.lastDistanceSelected
+      value = Int(Double(preferences.lastDistanceSelected * 1500) * (unitSystem ? 1000.0 : 1609.0))
     case .Time:
       value = preferences.lastTimeSelected
     }
-    let setup = RunSetup(unitSystem:preferences.unitSystem,voiceFeedback:RunType(rawValue: preferences.voiceFeedbackEnabled)!,goalType:runType, goalValue: value)
+    let setup = RunSetup(unitSystem:unitSystem,voiceFeedback:RunType(rawValue: preferences.voiceFeedbackEnabled)!,goalType:runType, goalValue: value)
     tracker = RaceTracker(setup: setup)
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
   }
 
   required init?(coder aDecoder: NSCoder) {
     let preferences = Preferences.instance
+    let unitSystem = preferences.unitSystem
     let runType = RunType(rawValue: preferences.lastRunType)!
     var value:Int
     switch runType {
     case .None:
       value = 0
     case .Distance:
-      value = preferences.lastDistanceSelected
+      value = Int(Double(preferences.lastDistanceSelected * 1500) * (unitSystem ? 1000.0 : 1609.0))
     case .Time:
       value = preferences.lastTimeSelected
     }
-    let setup = RunSetup(unitSystem:preferences.unitSystem,voiceFeedback:RunType(rawValue: preferences.voiceFeedbackEnabled)!,goalType:runType, goalValue: value)
+    let setup = RunSetup(unitSystem:unitSystem,voiceFeedback:RunType(rawValue: preferences.voiceFeedbackEnabled)!,goalType:runType, goalValue: value)
     tracker = RaceTracker(setup: setup)
     super.init(coder: aDecoder)
   }
+  private let speaker = Speaker()
   
   override func viewDidLoad() {
     super.viewDidLoad()
     tracker.delegate = self
     tracker.startTracking()
+    speaker.speak("Beginning workout")
   }
   var lastColor:UIColor?
   @IBAction func togglePause(sender: UIButton) {
@@ -111,6 +115,7 @@ extension RunningViewController:RaceTrackerDelegate {
   }
   func logDescriptionString(string:String) {
     print(string)
+    speaker.speak(string)
   }
   func goalCompletion(percent:Double) {
     slider.value = Float(percent)

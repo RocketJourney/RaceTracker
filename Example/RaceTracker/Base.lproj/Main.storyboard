@@ -40,35 +40,49 @@
                                         <animations/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </pickerView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="km" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9IT-uc-Yet">
+                                        <rect key="frame" x="-42" y="-21" width="42" height="21"/>
+                                        <animations/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <animations/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstItem="9IT-uc-Yet" firstAttribute="centerX" secondItem="dI6-M2-5la" secondAttribute="trailing" multiplier="0.81" id="0qz-c0-g44"/>
                                     <constraint firstItem="pb8-Vv-paV" firstAttribute="centerX" secondItem="dI6-M2-5la" secondAttribute="centerX" id="0ze-V1-PMX"/>
                                     <constraint firstAttribute="trailing" secondItem="pb8-Vv-paV" secondAttribute="trailing" id="Irh-gP-VS0"/>
                                     <constraint firstItem="pb8-Vv-paV" firstAttribute="centerY" secondItem="dI6-M2-5la" secondAttribute="centerY" id="Yir-es-mvM"/>
+                                    <constraint firstItem="9IT-uc-Yet" firstAttribute="centerY" secondItem="pb8-Vv-paV" secondAttribute="centerY" id="ga4-26-Zfh"/>
                                     <constraint firstItem="pb8-Vv-paV" firstAttribute="leading" secondItem="dI6-M2-5la" secondAttribute="leading" id="rD9-eK-SCa"/>
                                 </constraints>
                                 <variation key="default">
                                     <mask key="subviews">
                                         <exclude reference="pb8-Vv-paV"/>
+                                        <exclude reference="9IT-uc-Yet"/>
                                     </mask>
                                     <mask key="constraints">
                                         <exclude reference="0ze-V1-PMX"/>
                                         <exclude reference="Irh-gP-VS0"/>
                                         <exclude reference="Yir-es-mvM"/>
                                         <exclude reference="rD9-eK-SCa"/>
+                                        <exclude reference="0qz-c0-g44"/>
+                                        <exclude reference="ga4-26-Zfh"/>
                                     </mask>
                                 </variation>
                                 <variation key="heightClass=regular-widthClass=compact">
                                     <mask key="subviews">
                                         <include reference="pb8-Vv-paV"/>
+                                        <include reference="9IT-uc-Yet"/>
                                     </mask>
                                     <mask key="constraints">
                                         <include reference="0ze-V1-PMX"/>
                                         <include reference="Irh-gP-VS0"/>
                                         <include reference="Yir-es-mvM"/>
                                         <include reference="rD9-eK-SCa"/>
+                                        <include reference="0qz-c0-g44"/>
+                                        <include reference="ga4-26-Zfh"/>
                                     </mask>
                                 </variation>
                             </view>
@@ -352,6 +366,7 @@
                         <outlet property="segmentControl" destination="Wsq-Ma-LJb" id="KFG-Vp-UBg"/>
                         <outlet property="timePickerView" destination="peA-dg-heg" id="2rV-DN-Qjg"/>
                         <outlet property="timeRunView" destination="BnE-p7-sqR" id="5S5-GL-BWH"/>
+                        <outlet property="unitLabel" destination="9IT-uc-Yet" id="3ey-at-1eJ"/>
                         <segue destination="fYs-qs-wcX" kind="custom" identifier="kGoRunningSegue" customClass="GoRunningSegue" customModule="RaceTracker_Example" customModuleProvider="target" id="3q5-Bs-wh4"/>
                         <segue destination="ZJX-1z-4Ri" kind="custom" identifier="kGoRunSettings" customClass="GoRunSettings" customModule="RaceTracker_Example" customModuleProvider="target" id="bwv-O7-XIL"/>
                     </connections>
