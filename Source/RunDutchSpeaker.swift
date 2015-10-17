@@ -9,6 +9,7 @@
 import Foundation
 
 class RunDutchSpeaker : RunTrackerSpeechLanguageProvider {
+  var unitSystem = false
     func sayFeedback(time:TimeStructure, distance:DistanceStructure, pace:PaceStructure)->String {
         return " "
     }

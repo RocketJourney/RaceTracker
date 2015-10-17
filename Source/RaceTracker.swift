@@ -27,6 +27,7 @@ public typealias PaceStructure = (firstUnit:Int, secondUnit:Int)
 public typealias Coordinate = (longitude:Double, latitude:Double, altitude: Double, pace: Double, section:Int, position:Int)
 
 public protocol RunTrackerSpeechLanguageProvider {
+  var unitSystem:Bool {get set}
   func sayFeedback(time:TimeStructure, distance:DistanceStructure, pace:PaceStructure)->String
   func sayFeedbackDecremental(time:TimeStructure, distance:DistanceStructure, pace:PaceStructure)->String
   func sayMidpoint(time:TimeStructure, distance:DistanceStructure, pace:PaceStructure)->String
@@ -85,7 +86,7 @@ public class RaceTracker: NSObject {
   private let kLogRequiredAccuracy = 42.0
   private var metric : Bool
   private var conversion : Double
-  private var nextVoiceTime = 0
+  private var nextVoiceTime:Int
   private var hasGoal : Bool
   private var goalDistance : Double
   private var voiceDistance:Double
@@ -93,6 +94,7 @@ public class RaceTracker: NSObject {
   private var goalTime : Int
   private var distance : Double = 0.0
   private let updateInterval:Int16 = 3
+  private var reachedNextVoice:Double
   private let locationManager = CLLocationManager()
   private var paused = false
   private var pausedForAuto = false
@@ -127,8 +129,9 @@ public class RaceTracker: NSObject {
     voiceFeedback = setup.voiceFeedback
     voiceDistance = setup.voiceDistance
     voiceTime = setup.voiceTime
+    nextVoiceTime = voiceTime
     goalDistance = setup.goalDistance
-
+    reachedNextVoice = voiceDistance
     goalTime = setup.goalTime
     conversion = metric == true ? 1000.0 : 1609.0
     super.init()
@@ -139,43 +142,6 @@ public class RaceTracker: NSObject {
     locationManager.desiredAccuracy = kCLLocationAccuracyBest
     locationManager.activityType = .Fitness
   }
-//  func setup(metric:Bool, distance:Double?, feedbackType:Int, feedbackValue:Int) {
-//    if distance != nil {
-//      hasGoal = true
-//      goalValue = Int(metric ? distance! : (distance! * 1.609))
-//      print("Distance goal set @ \(goalValue)")
-//    } else {
-//      goalValue = 0
-//      hasGoal = false
-//    }
-//    if feedbackType == 1 {
-//      voiceFeedback = .Distance
-//      var value:Double
-//      if feedbackValue == 0 {
-//        value = 500.0
-//      } else if feedbackValue == 1 {
-//        value = 1000.0
-//      } else {
-//        value = 2000.0
-//      }
-//      feedbackDistance = metric == true ? value : (value * 1.609)
-//      reachedNextVoice = feedbackDistance
-//      print("Voice feedback each \(feedbackDistance) \(metric)")
-//    } else if feedbackType == 2 {
-//      voiceFeedback = .Time
-//      var value:Int
-//      if feedbackValue == 0 {
-//        value = 120
-//      } else if feedbackValue == 1 {
-//        value = 300
-//      } else {
-//        value = 600
-//      }
-//      voiceTime = value
-//      nextVoiceTime = voiceTime
-//      print("Voice feedback each \(voiceTime) seconds")
-//    }
-//  }
   //--------------------------------------------------
   // MARK: - Setup
   //--------------------------------------------------
@@ -261,7 +227,7 @@ public class RaceTracker: NSObject {
   }
   private func cacheRun() {
     if let runDiff = getRunDiff() {
-      print("Caching run @ \(time) seconds distance \(distance)")
+      print("[RaceTracker] - Sending run to cache @ \(time) seconds distance \(distance)")
       delegate?.cacheRun(distance, time: time, calories: calories, elevation: elevation, metricMilestones:[0], royalMilestones:[0],coordinates: runDiff)
     }
   }
@@ -300,7 +266,7 @@ public class RaceTracker: NSObject {
     return false
   }
   
-  private var reachedNextVoice = 0.0
+  
   private func reachedNextFeedback()->Bool {
     switch voiceFeedback {
     case .Distance:
@@ -409,7 +375,7 @@ public class RaceTracker: NSObject {
     return speaker!.sayFeedback(convertTimeToTimeStructure(time), distance:convertDistanceToDistanceStructure(distance, conversion: conversion), pace:convertTimeAndDistanceToPaceStructure(time, distance: distance, conversion: conversion))
   }
   private func decrementalFeedback()->String{
-    return speaker!.sayFeedbackDecremental(convertTimeToTimeStructure(time), distance:convertDistanceToDistanceStructure(distance, conversion: conversion), pace:convertTimeAndDistanceToPaceStructure(time, distance: distance, conversion: conversion))
+    return speaker!.sayFeedbackDecremental(convertTimeToTimeStructure(time), distance:convertDistanceToDistanceStructure(goalDistance - distance, conversion: conversion), pace:convertTimeAndDistanceToPaceStructure(time, distance: distance, conversion: conversion))
   }
   private func midpointFeedback()->String {
     
@@ -485,6 +451,7 @@ public class RaceTracker: NSObject {
   }
   func setLanguage(speakerLanguage:RunTrackerSpeechLanguageProvider) {
     speaker = speakerLanguage
+    speaker!.unitSystem = metric
   }
   
   func convertTimeToTimeStructure(time:Int)->TimeStructure {

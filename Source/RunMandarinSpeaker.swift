@@ -9,6 +9,7 @@
 import Foundation
 
 class RunMandarinSpeaker : RunTrackerSpeechLanguageProvider {
+  var unitSystem = false
     func sayFeedback(time:TimeStructure, distance:DistanceStructure, pace:PaceStructure)->String {
         return " "
     }

@@ -9,8 +9,10 @@
 import Foundation
 
 class RunSpanishSpeaker : RunTrackerSpeechLanguageProvider {
+  private var _unitSystem = false
   var unitSystem:Bool {
     set(value) {
+      _unitSystem = value
       if value {
         units = "kilómetros"
         unit = "kilómetro"
@@ -20,7 +22,7 @@ class RunSpanishSpeaker : RunTrackerSpeechLanguageProvider {
       }
     }
     get {
-      return units == "millas" ? false : true
+      return _unitSystem
     }
   }
   private var unit = ""

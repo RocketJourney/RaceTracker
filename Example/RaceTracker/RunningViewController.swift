@@ -110,7 +110,7 @@ extension RunSetup {
       let unitSystem = preferences.unitSystem
       let runType = RunType(rawValue: preferences.lastRunType)!
       let goalDistance = (1.5 + (Double(preferences.lastDistanceSelected) * 0.5)) * (unitSystem ? 1000.0 : 1609.0)
-      let goalTime = preferences.lastTimeSelected
+      let goalTime = (preferences.lastTimeSelected + 1) * 5 * 60
       let voiceFeedbackType = RunType(rawValue: preferences.voiceFeedbackEnabled)!
       let _voiceDistance = preferences.voiceFeedbackDistance + 1
       var voiceDistance:Double
