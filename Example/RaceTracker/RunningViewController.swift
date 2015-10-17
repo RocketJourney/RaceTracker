@@ -14,43 +14,9 @@ class RunningViewController:UIViewController {
   @IBOutlet weak var paceLabel: UILabel!
   @IBOutlet weak var timeLabel: UILabel!
   @IBOutlet weak var pauseButton: UIButton!
-  private var tracker:RaceTracker
+  private var tracker = RaceTracker(setup: RunSetup.getSetup)
   @IBOutlet weak var slider: UISlider!
-  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
-    let preferences = Preferences.instance
-    let unitSystem = preferences.unitSystem
-    let runType = RunType(rawValue: preferences.lastRunType)!
-    var value:Int
-    switch runType {
-    case .None:
-      value = 0
-    case .Distance:
-      value = Int(Double(preferences.lastDistanceSelected * 1500) * (unitSystem ? 1000.0 : 1609.0))
-    case .Time:
-      value = preferences.lastTimeSelected
-    }
-    let setup = RunSetup(unitSystem:unitSystem,voiceFeedback:RunType(rawValue: preferences.voiceFeedbackEnabled)!,goalType:runType, goalValue: value)
-    tracker = RaceTracker(setup: setup)
-    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-  }
 
-  required init?(coder aDecoder: NSCoder) {
-    let preferences = Preferences.instance
-    let unitSystem = preferences.unitSystem
-    let runType = RunType(rawValue: preferences.lastRunType)!
-    var value:Int
-    switch runType {
-    case .None:
-      value = 0
-    case .Distance:
-      value = Int(Double(preferences.lastDistanceSelected * 1500) * (unitSystem ? 1000.0 : 1609.0))
-    case .Time:
-      value = preferences.lastTimeSelected
-    }
-    let setup = RunSetup(unitSystem:unitSystem,voiceFeedback:RunType(rawValue: preferences.voiceFeedbackEnabled)!,goalType:runType, goalValue: value)
-    tracker = RaceTracker(setup: setup)
-    super.init(coder: aDecoder)
-  }
   private let speaker = Speaker()
   
   override func viewDidLoad() {
@@ -133,5 +99,32 @@ extension RunningViewController:RaceTrackerDelegate {
   
   func setIdle(isIdle:Bool) {
     
+  }
+}
+
+
+extension RunSetup {
+  static var getSetup:RunSetup {
+    get {
+      let preferences = Preferences.instance
+      let unitSystem = preferences.unitSystem
+      let runType = RunType(rawValue: preferences.lastRunType)!
+      let goalDistance = (1.5 + (Double(preferences.lastDistanceSelected) * 0.5)) * (unitSystem ? 1000.0 : 1609.0)
+      let goalTime = preferences.lastTimeSelected
+      let voiceFeedbackType = RunType(rawValue: preferences.voiceFeedbackEnabled)!
+      let _voiceDistance = preferences.voiceFeedbackDistance + 1
+      var voiceDistance:Double
+      let conversion =  unitSystem ? 1.0 : 1.609
+      switch _voiceDistance {
+      case 1: voiceDistance =  1000.0 * conversion
+      case 2: voiceDistance =  1500.0 * conversion
+      case 3: voiceDistance =  2000.0 * conversion
+      default: voiceDistance = 0.0
+      }
+      let _voiceTime = preferences.voiceFeedbackTime + 1
+      let voiceTime =  _voiceTime * 3000
+      let setup = RunSetup(unitSystem:unitSystem,voiceFeedback:voiceFeedbackType,voiceDistance: voiceDistance, voiceTime: voiceTime, goalType:runType, goalDistance: Double(goalDistance), goalTime: goalTime)
+      return setup
+    }
   }
 }

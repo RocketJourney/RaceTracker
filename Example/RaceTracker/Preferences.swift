@@ -61,12 +61,21 @@ class Preferences {
     }
   }
   private let kVoiceFeedbackValue = "kvoiceFeedbackValue"
-  var voiceFeedbackValue:Int {
+  var voiceFeedbackDistance:Int {
     get {
       return NSUserDefaults.standardUserDefaults().integerForKey(kVoiceFeedbackValue)
     }
     set(value) {
       NSUserDefaults.standardUserDefaults().setInteger(value, forKey: kVoiceFeedbackValue)
+    }
+  }
+  private let kVoiceFeedbackTime = "kvoiceFeedbackTime"
+  var voiceFeedbackTime:Int {
+    get {
+      return NSUserDefaults.standardUserDefaults().integerForKey(kVoiceFeedbackTime)
+    }
+    set(value) {
+      NSUserDefaults.standardUserDefaults().setInteger(value, forKey: kVoiceFeedbackTime)
     }
   }
 }

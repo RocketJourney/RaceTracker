@@ -106,14 +106,14 @@ class RunSettingsController : UITableViewController {
   }
   private func setDistance(value:Int) {
     Preferences.instance.voiceFeedbackEnabled = 1
-    Preferences.instance.voiceFeedbackValue = value
+    Preferences.instance.voiceFeedbackDistance = value
     delegate!.updateFeedbackLabel(1, value: value)
     dismiss()
   }
   private func setTime(value:Int) {
     Preferences.instance.voiceFeedbackEnabled = 2
     delegate!.updateFeedbackLabel(2, value: value)
-    Preferences.instance.voiceFeedbackValue = value
+    Preferences.instance.voiceFeedbackTime = value
     dismiss()
   }
   private func toggleMetric() {

@@ -93,7 +93,14 @@ class ViewController: UIViewController {
   private func setupFeedbackBtn() {
     let prefs = Preferences.instance
     let feedbackType = prefs.voiceFeedbackEnabled
-    let feedbackValue = prefs.voiceFeedbackValue
+    var feedbackValue:Int
+    if feedbackType == 1 {
+      feedbackValue = prefs.voiceFeedbackDistance
+    } else if feedbackType == 2 {
+      feedbackValue = prefs.voiceFeedbackTime
+    } else {
+      feedbackValue = 0
+    }
     updateFeedbackLabel(feedbackType, value: feedbackValue)
   }
   
