@@ -72,7 +72,6 @@
 		88EC8A73DDA713E13305DBE2 /* Pods-RaceTracker_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RaceTracker_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RaceTracker_Tests/Pods-RaceTracker_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		94053A041BC16461003E50BE /* RunningViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunningViewController.swift; sourceTree = "<group>"; };
 		94053A071BC164B9003E50BE /* GoRunningSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoRunningSegue.swift; sourceTree = "<group>"; };
-		94823E2B1BC1813C007F6A0D /* RaceCoordinate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RaceCoordinate.swift; path = ../../Source/RaceCoordinate.swift; sourceTree = "<group>"; };
 		94823E2E1BC18A12007F6A0D /* RunSettingsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunSettingsController.swift; sourceTree = "<group>"; };
 		94823E301BC18A49007F6A0D /* GoRunSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoRunSettings.swift; sourceTree = "<group>"; };
 		94823E331BC18DD6007F6A0D /* RunDistancePickerProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunDistancePickerProvider.swift; sourceTree = "<group>"; };
@@ -221,7 +220,6 @@
 			isa = PBXGroup;
 			children = (
 				94C543C31BCF556400DE9154 /* Speaker.swift */,
-				94823E2B1BC1813C007F6A0D /* RaceCoordinate.swift */,
 				94823E3F1BC1E2CC007F6A0D /* UIView+extensions.swift */,
 			);
 			name = utils;

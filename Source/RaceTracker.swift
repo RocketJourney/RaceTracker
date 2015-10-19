@@ -233,9 +233,14 @@ public class RaceTracker: NSObject {
   }
   private func checkGoalAndFeedback() {
     switch goalType {
-    case .None: break
+    case .None: checkFeedback()
     case .Distance: checkDistanceGoal()
     case .Time: checkTimeGoal()
+    }
+  }
+  private func checkFeedback() {
+    if reachedNextFeedback() {
+      delegate?.logDescriptionString(sayFeedback())
     }
   }
   
@@ -260,8 +265,8 @@ public class RaceTracker: NSObject {
     if !midpoint && distance > (goal / 2.0) {
       midpoint = true
       delegate?.logDescriptionString(midpointFeedback())
-    } else if midpoint == true {
-      return true
+    } else {
+      return midpoint
     }
     return false
   }
