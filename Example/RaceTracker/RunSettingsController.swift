@@ -16,6 +16,7 @@ protocol RunSettingsDelegate {
 class RunSettingsController : UITableViewController {
   var delegate:RunSettingsDelegate?
   var unitSystem = Preferences.instance.unitSystem
+  var autopause = Preferences.instance.autopause
   private var unitString = "km"
   
   override func viewDidLoad() {
@@ -42,7 +43,7 @@ class RunSettingsController : UITableViewController {
   }
   
   override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-    return 5
+    return 6
   }
   
   override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -61,14 +62,14 @@ class RunSettingsController : UITableViewController {
     xview.backgroundColor = UIColor.lightGrayColor()
     return xview
   }
-  
+  weak var uiswitch:UISwitch?
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     let cell = UITableViewCell()
     cell.backgroundColor = UIColor.blackColor()
     cell.textLabel?.textColor = UIColor.whiteColor()
     switch indexPath.section {
     case 0:
-      cell.textLabel?.text = "No music"
+      cell.textLabel?.text = "No Feedback"
     case 1:
       switch indexPath.row {
       case 0: cell.textLabel?.text = "1.0 \(unitString)"
@@ -85,6 +86,19 @@ class RunSettingsController : UITableViewController {
       }
     case 3: cell.textLabel?.text = unitSystem ? "Metric" : "Imperial"
     case 4: cell.textLabel?.text = "Pace tracking"
+    case 5:
+      if let uiswitch = uiswitch {
+        cell.addSubview(uiswitch)
+      } else {
+        let _uiswitch = UISwitch()
+        cell.addSubview(_uiswitch)
+        uiswitch = _uiswitch
+      }
+      cell.selectionStyle = .None
+      uiswitch!.center = CGPointMake(view.frame.size.width * 0.9, 20)
+      uiswitch!.on = autopause
+      uiswitch!.addTarget(self, action: "toggleAutopause:", forControlEvents: .ValueChanged)
+      cell.textLabel?.text = "Autopause"
     default: break
     }
     return cell
@@ -98,6 +112,11 @@ class RunSettingsController : UITableViewController {
     case 4: paceSelect()
     default: break
     }
+  }
+  func toggleAutopause(uiswitch:UISwitch) {
+    autopause = !autopause
+    Preferences.instance.autopause = autopause
+    uiswitch.setOn(autopause, animated: true)
   }
   private func setNoSound() {
     Preferences.instance.voiceFeedbackEnabled = 0

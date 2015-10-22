@@ -78,4 +78,13 @@ class Preferences {
       NSUserDefaults.standardUserDefaults().setInteger(value, forKey: kVoiceFeedbackTime)
     }
   }
+  private let kAutopauseEnabled = "kAutopauseEnabled"
+  var autopause:Bool {
+    get {
+      return NSUserDefaults.standardUserDefaults().boolForKey(kAutopauseEnabled)
+    }
+    set(value) {
+      NSUserDefaults.standardUserDefaults().setBool(value, forKey: kAutopauseEnabled)
+    }
+  }
 }

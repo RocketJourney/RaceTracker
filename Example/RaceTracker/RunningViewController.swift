@@ -43,6 +43,9 @@ class RunningViewController:UIViewController {
 }
 
 extension RunningViewController:RaceTrackerDelegate {
+  func gpsSignal(isWeak:Bool) {
+    print("[RunningViewController] - Signal \(isWeak ? "weak" : "strong")")
+  }
   private func timeText(hours:Int, minutes:Int, seconds:Int)->String {
     var hoursString = hours == 0 ? "" : "\(hours):"
     if minutes < 10 {
@@ -123,7 +126,8 @@ extension RunSetup {
       }
       let _voiceTime = preferences.voiceFeedbackTime + 1
       let voiceTime =  _voiceTime * 3000
-      let setup = RunSetup(unitSystem:unitSystem,voiceFeedback:voiceFeedbackType,voiceDistance: voiceDistance, voiceTime: voiceTime, goalType:runType, goalDistance: Double(goalDistance), goalTime: goalTime)
+      let autopause = preferences.autopause
+      let setup = RunSetup(unitSystem:unitSystem,voiceFeedback:voiceFeedbackType,voiceDistance: voiceDistance, voiceTime: voiceTime, goalType:runType, goalDistance: Double(goalDistance), goalTime: goalTime, autopause: autopause)
       return setup
     }
   }

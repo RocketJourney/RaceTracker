@@ -175,7 +175,7 @@ extension ViewController:RunSettingsDelegate {
   }
   func updateFeedbackLabel(type:Int, value:Int) {
     switch type {
-    case 0: setFeedbackTitle("No Music")
+    case 0: setFeedbackTitle("No Feedback")
     case 1:
       switch value {
       case 0: setFeedbackTitle("1.0 \(unitString)")

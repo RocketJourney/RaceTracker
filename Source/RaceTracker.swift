@@ -5,7 +5,7 @@
 //  Created by Ernesto Cambuston on 10/3/15.
 //  Copyright © 2015 CocoaPods. All rights reserved.
 //
-//   This class implements a finite state machine that tracks user running events.
+//   This class implements a server that tracks user running events.
 // It also provides an interface you can use to update ui, log or synthesize strings,
 // update a progress bar, or cache progress. You can configure distance or time goals,
 // if you want to listen relevant feedback.
@@ -64,7 +64,8 @@ public struct RunSetup {
   public var goalType:RunType
   public var goalDistance:Double
   public var goalTime:Int
-  public init (unitSystem:Bool, voiceFeedback:RunType, voiceDistance:Double, voiceTime:Int, goalType:RunType, goalDistance:Double, goalTime:Int) {
+  public var autopause:Bool
+  public init (unitSystem:Bool, voiceFeedback:RunType, voiceDistance:Double, voiceTime:Int, goalType:RunType, goalDistance:Double, goalTime:Int, autopause:Bool) {
     self.unitSystem = unitSystem
     self.goalType = goalType
     self.voiceFeedback = voiceFeedback
@@ -72,6 +73,7 @@ public struct RunSetup {
     self.voiceTime = voiceTime
     self.goalDistance = goalDistance
     self.goalTime = goalTime
+    self.autopause = autopause
   }
 }
 
@@ -135,8 +137,12 @@ public class RaceTracker: NSObject {
     goalDistance = setup.goalDistance
     reachedNextVoice = voiceDistance
     goalTime = setup.goalTime
+    isAutopauseEnabled = setup.autopause
     conversion = metric == true ? 1000.0 : 1609.0
     super.init()
+    if #available(iOS 9.0, *) {
+      locationManager.allowsBackgroundLocationUpdates = true
+    }
     locationQueue.reserveCapacity(15000)
     currentRun.reserveCapacity(15000)
     locationManager.delegate = self
