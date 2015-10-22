@@ -377,13 +377,20 @@ public class RaceTracker: NSObject {
   private var averageAccuracy = 0.0
   private let kEvaluateAccuracyPeriod = 12
   private let kMaxPermittedAccuracy = 30.0
+  private var signalWeak = false
   private func evaluateAccuracy(accuracy:Double) {
     averageAccuracy += accuracy
     if (time % kEvaluateAccuracyPeriod) == 0 {
       if averageAccuracy > (Double(kEvaluateAccuracyPeriod) * kMaxPermittedAccuracy) {
-        delegate?.gpsSignal(true)
+        if !signalWeak {
+          signalWeak = true
+          delegate?.gpsSignal(true)
+        }
       } else {
-        delegate?.gpsSignal(false)
+        if signalWeak {
+          signalWeak = false
+          delegate?.gpsSignal(false)
+        }
       }
       averageAccuracy = 0.0
     }
