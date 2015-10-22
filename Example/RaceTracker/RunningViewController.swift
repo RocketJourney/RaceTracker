@@ -23,7 +23,6 @@ class RunningViewController:UIViewController {
     super.viewDidLoad()
     tracker.delegate = self
     tracker.startTracking()
-    speaker.speak("Beginning workout")
   }
   var lastColor:UIColor?
   @IBAction func togglePause(sender: UIButton) {

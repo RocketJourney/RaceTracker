@@ -51,15 +51,15 @@ class RunEnglishSpeaker : RunTrackerSpeechLanguageProvider {
     return string
   }
   func sayFeedback(time:TimeStructure, distance:DistanceStructure, pace:PaceStructure)->String {
-    var string = "distance, \(distance.firstUnit), "
+    var string = "distance,..  \(distance.firstUnit), "
     if distance.secondUnit > 9 {
       string += "point  "
       string += printFirst(distance.secondUnit)
     }
     if distance.firstUnit == 1 && distance.secondUnit <= 9 {
-      string += "\(unit) completed, "
+      string += " \(unit) completed,.. "
     } else {
-      string += "\(units) completed, "
+      string += " \(units) completed,.. "
     }
     string += timeString(time)
     string += "   "
@@ -67,11 +67,11 @@ class RunEnglishSpeaker : RunTrackerSpeechLanguageProvider {
     return string
   }
   private func printFirst(number:Int)->String {
-     let string = Array(arrayLiteral: "\(number)")[0]
-    return "\(string)"
+    let string = Array(arrayLiteral: "\(number)".characters)[0]
+    return String(string.first!)
   }
   private func paceString(pace:PaceStructure)->String{
-    return " average pace, \(pace.firstUnit) minutes, \(pace.secondUnit) seconds per \(unit) "
+    return " average pace,.. \(pace.firstUnit) minutes, \(pace.secondUnit) seconds per \(unit) "
   }
   func sayFeedbackDecremental(time:TimeStructure, distance:DistanceStructure, pace:PaceStructure)->String {
     return " \(distance.firstUnit) point \(printFirst(distance.secondUnit)) \(units) to go... \(timeString(time)),.. Average pace.., \(pace.firstUnit) minutes, \(pace.secondUnit) seconds per \(unit)"
