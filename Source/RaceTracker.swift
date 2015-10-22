@@ -40,6 +40,7 @@ public protocol RaceTrackerDelegate {
   func logDescriptionString(string:String)
   func goalCompletion(percent:Double)
   func setIdle(isIdle:Bool)
+  func gpsSignal(isWeak:Bool)
   func cacheRun(distance:Double,
     time:Int,
     calories:Int,
@@ -97,7 +98,7 @@ public class RaceTracker: NSObject {
   private var reachedNextVoice:Double
   private let locationManager = CLLocationManager()
   private var paused = false
-  private var pausedForAuto = false
+  private var pausedForAutopause = false
   private var calories = 0
   private var elevation = 0.0
   private var cachedToPosition = 0 //position we cached to, last time we called delegate?.cacheRun(:)
@@ -115,6 +116,7 @@ public class RaceTracker: NSObject {
   private var timeSinceUnpause = NSDate.timeIntervalSinceReferenceDate()
   private var noComparePoint = false
   private var pace = 0.0
+  private var speed = 0.0
   private var goalType:RunType
   
   public var delegate : RaceTrackerDelegate?
@@ -185,7 +187,7 @@ public class RaceTracker: NSObject {
     timer?.invalidate()
     timer = nil
     timeSinceUnpause = NSDate.timeIntervalSinceReferenceDate()
-    if pausedForAuto {
+    if pausedForAutopause {
       locationManager.stopUpdatingLocation()
       idle(true)
     }
@@ -225,7 +227,7 @@ public class RaceTracker: NSObject {
   private func updateMetrics() {
     calculateMetrics()
     locationQueue.removeAll(keepCapacity: true)
-    evaluateAutopause(pace)
+    evaluateAutopause(speed)
     checkGoalAndFeedback()
     if delayedCache { cacheRun() }
   }
@@ -292,28 +294,29 @@ public class RaceTracker: NSObject {
     }
     return false
   }
+  private let weight = 67.0
   private func calculateMetrics() {
     if let sampleLocation = locationQueue.last {
       if sampleLocation.horizontalAccuracy <= kLogRequiredAccuracy && currentRun.count > 0 {
         let priorLocation = currentRun.last!
-        
         let paceTimeInterval = sampleLocation.timestamp.timeIntervalSinceReferenceDate - priorLocation.timestamp.timeIntervalSinceReferenceDate
         let distanceToAdd = calculateDistanceFrom(priorLocation, newLocation: sampleLocation)
         distance = distance + distanceToAdd
         
-        let currentPace = distanceToAdd / paceTimeInterval
-        
-        //let speedMin = 60 * pace
-        
-        _ = sampleLocation.altitude - priorLocation.altitude
-//        var grade = 0.0
-//        if distanceToAdd > 1 {
-//          grade = climbed / distanceToAdd
-//        }
+        speed = distanceToAdd / paceTimeInterval
         pace = Double(time) / distance
+        let speedMin = 60 * pace
+        let climbed = sampleLocation.altitude - priorLocation.altitude
+        var grade = 0.0
+        if distanceToAdd > 1 {
+          grade = climbed / distanceToAdd
+        }
+        let caloriesToAdd = (paceTimeInterval * weight * (3.5 + (0.2 * speedMin) + (0.9 * speedMin * grade))) / 12600
+        calories += Int(caloriesToAdd)
         currentRun.append(sampleLocation)
-        currentRunMetadata.append(RunMetaData(pace: currentPace, segment: segment, time: time))
+        currentRunMetadata.append(RunMetaData(pace: speed, segment: segment, time: time))
       }
+      evaluateAccuracy((sampleLocation.horizontalAccuracy + sampleLocation.verticalAccuracy) / 2)
     }
   }
   var consecutiveHeadingCount = 0
@@ -345,8 +348,45 @@ public class RaceTracker: NSObject {
     }
     return distanceToAdd
   }
-  private func evaluateAutopause(pace:Double) {
+  private var isAutopauseEnabled = false
+  private let kAutopauseDelay = 10.0
+  private let kAutopauseSpeed = 0.25
+  private func evaluateAutopause(speed:Double) {
+    if speed < 0 {
+      if let last = currentRun.last {
+        if isAutopauseEnabled
+             && ensureItHasntRecentlyAutopaused()
+             && ((last.timestamp.timeIntervalSinceReferenceDate + kAutopauseDelay) < NSDate.timeIntervalSinceReferenceDate()) {
+
+        }
+      }
+    } else {
+      if isAutopauseEnabled
+             && (speed < kAutopauseSpeed)
+             && ensureItHasntRecentlyAutopaused() {
+          
+      }
+    }
+  }
+  private var averageAccuracy = 0.0
+  private let kEvaluateAccuracyPeriod = 12
+  private let kMaxPermittedAccuracy = 30.0
+  private func evaluateAccuracy(accuracy:Double) {
+    averageAccuracy += accuracy
+    if (time % kEvaluateAccuracyPeriod) == 0 {
+      if averageAccuracy > (Double(kEvaluateAccuracyPeriod) * kMaxPermittedAccuracy) {
+        delegate?.gpsSignal(true)
+      } else {
+        delegate?.gpsSignal(false)
+      }
+      averageAccuracy = 0.0
+    }
     
+  }
+  private func ensureItHasntRecentlyAutopaused()->Bool {
+    let timeSinceReference = NSDate.timeIntervalSinceReferenceDate()
+    return ((timeSinceUnpause + kAutopauseDelay) < timeSinceReference)
+      && (date.timeIntervalSinceReferenceDate + (kAutopauseDelay * 2) < timeSinceReference)
   }
   private func getTime()->TimeStructure {
     return convertTimeToTimeStructure(time)
@@ -512,7 +552,7 @@ extension RaceTracker: CLLocationManagerDelegate {
   }
   private func verifyLocationHistory() {
     let locationCount = locationQueue.count
-    if pausedForAuto && locationCount > 2 {
+    if pausedForAutopause && locationCount > 2 {
       let _ = locationQueue.last
       let _ = locationQueue[locationCount - 2]
       let _ = locationQueue[locationCount - 3]
