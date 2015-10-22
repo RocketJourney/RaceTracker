@@ -146,6 +146,7 @@ public class RaceTracker: NSObject {
   // MARK: - Setup
   //--------------------------------------------------
   public func startTracking() {
+    idle(true)
     logSetup()
     locationManager.startUpdatingLocation()
     locationQueue.removeAll(keepCapacity: true)
@@ -173,13 +174,16 @@ public class RaceTracker: NSObject {
     idle(true)
     segment = segment + 1
     paused = false
-    timer = NSTimer.scheduledTimerWithTimeInterval(oneSecond, target: self, selector: "tick", userInfo: nil, repeats: true)
+    UIApplication.sharedApplication().beginBackgroundTaskWithExpirationHandler(nil)
+    timer = NSTimer(timeInterval: oneSecond, target: self, selector: "tick", userInfo: nil, repeats: true)
+    NSRunLoop.mainRunLoop().addTimer(timer!, forMode: NSRunLoopCommonModes)
     noComparePoint = true
     
   }
   public func pauseRun() {
     paused = true
     timer?.invalidate()
+    timer = nil
     timeSinceUnpause = NSDate.timeIntervalSinceReferenceDate()
     if pausedForAuto {
       locationManager.stopUpdatingLocation()

@@ -98,7 +98,7 @@ extension RunningViewController:RaceTrackerDelegate {
   }
   
   func setIdle(isIdle:Bool) {
-    
+    UIApplication.sharedApplication().idleTimerDisabled = isIdle
   }
 }
 
