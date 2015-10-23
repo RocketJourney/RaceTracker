@@ -24,7 +24,7 @@ public typealias TimeStructure = (hours:Int, minutes:Int, seconds:Int)
 public typealias DistanceStructure = (firstUnit:Int, secondUnit:Int)
 public typealias PaceStructure = (firstUnit:Int, secondUnit:Int)
 
-public typealias Coordinate = (longitude:Double, latitude:Double, altitude: Double, pace: Double, section:Int, position:Int)
+public typealias Coordinate = (longitude:Double, latitude:Double, altitude: Double, pace: Double, section:Int, position:Int, segment:Int)
 
 public protocol RunTrackerSpeechLanguageProvider {
   var unitSystem:Bool {get set}
@@ -41,13 +41,15 @@ public protocol RaceTrackerDelegate {
   func goalCompletion(percent:Double)
   func setIdle(isIdle:Bool)
   func gpsSignal(isWeak:Bool)
+  func autopausedRace(paused:Bool)
   func cacheRun(distance:Double,
-    time:Int,
-    calories:Int,
-    elevation:Double,
-    metricMilestones:Array<Int>,
-    royalMilestones:Array<Int>,
-    coordinates:Array<Coordinate>)
+                    time:Int,
+                calories:Int,
+               elevation:Double,
+                segments:Int,
+        metricMilestones:Array<Int>,
+         royalMilestones:Array<Int>,
+             coordinates:Array<Coordinate>)
 }
 
 public enum RunType:Int {
@@ -240,7 +242,13 @@ public class RaceTracker: NSObject {
   private func cacheRun() {
     if let runDiff = getRunDiff() {
       print("[RaceTracker] - Sending run to cache @ \(time) seconds distance \(distance)")
-      delegate?.cacheRun(distance, time: time, calories: calories, elevation: elevation, metricMilestones:[0], royalMilestones:[0],coordinates: runDiff)
+      delegate?.cacheRun(distance, time: time,
+                               calories: calories,
+                              elevation: elevation,
+                               segments: segment,
+                       metricMilestones:[0],
+                        royalMilestones:[0],
+                            coordinates: runDiff)
     }
   }
   private func checkGoalAndFeedback() {
@@ -459,7 +467,7 @@ public class RaceTracker: NSObject {
       let currCoord = currentRun[i]
       let currCoordMeta = currentRunMetadata[i]
       let storedLocation = Coordinate(longitude: Double(currCoord.coordinate.longitude), latitude: Double(currCoord.coordinate.latitude),
-        altitude: Double(currCoord.altitude), pace: pace, section: currCoordMeta.segment, position: cachedToPosition + i)
+        altitude: Double(currCoord.altitude), pace: pace, section: currCoordMeta.segment, position: cachedToPosition + i, segment: currCoordMeta.segment)
       locArr.append(storedLocation)
     }
     cachedToPosition = currentRun.count
@@ -468,7 +476,7 @@ public class RaceTracker: NSObject {
   
   public func finishRun() {
     if let runDiff = getRunDiff() {
-      delegate?.cacheRun(distance, time: time, calories: calories, elevation: elevation, metricMilestones:[0], royalMilestones:[0], coordinates: runDiff)
+      delegate?.cacheRun(distance, time: time, calories: calories, elevation: elevation, segments: segment, metricMilestones:[0], royalMilestones:[0], coordinates: runDiff)
     }
     locationManager.stopUpdatingLocation()
     locationManager.delegate = nil

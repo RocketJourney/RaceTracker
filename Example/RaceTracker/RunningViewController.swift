@@ -42,6 +42,9 @@ class RunningViewController:UIViewController {
 }
 
 extension RunningViewController:RaceTrackerDelegate {
+  func autopausedRace(paused:Bool) {
+    
+  }
   func gpsSignal(isWeak:Bool) {
     print("[RunningViewController] - Signal \(isWeak ? "weak" : "strong")")
   }
@@ -90,6 +93,7 @@ extension RunningViewController:RaceTrackerDelegate {
     time:Int,
     calories:Int,
     elevation:Double,
+    segments: Int,
     metricMilestones:Array<Int>,
     royalMilestones:Array<Int>,
     coordinates:Array<Coordinate>) -> () {

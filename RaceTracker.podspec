@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "RaceTracker"
-  s.version          = "0.2.0"
+  s.version          = "0.3.0"
   s.summary          = "RaceTracker is RocketJourney's Run Tracking Engine."
 
   s.description      = <<-DESC
