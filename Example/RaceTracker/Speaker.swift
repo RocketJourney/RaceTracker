@@ -22,8 +22,10 @@ class Speaker:NSObject, AVSpeechSynthesizerDelegate {
     self.language = AVSpeechSynthesisVoice.currentLanguageCode()
     super.init()
     speechSynthesizer.delegate = self
-    queue.append(" ")
-    sayNext()
+  }
+  
+  deinit {
+    NSNotificationCenter.defaultCenter().removeObserver(self)
   }
   func shut() {
     speechSynthesizer.stopSpeakingAtBoundary(.Immediate)
@@ -37,18 +39,22 @@ class Speaker:NSObject, AVSpeechSynthesizerDelegate {
   }
   
   private func sayNext() {
-    aboutToSpeak()
     if !queue.isEmpty {
+      aboutToSpeak()
       if let stringToSpeak = queue[0] as String? {
         speakString(stringToSpeak, language: language)
         queue.removeAtIndex(0)
-        let dispatchTime: dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(0.3 * Double(NSEC_PER_SEC)))
-        dispatch_after(dispatchTime, dispatch_get_main_queue(), {
-          self.sayNext()
-          })
-        
+        sayNext()
       }
     }
+  }
+  private func delay(delay:Double, closure:()->()) {
+    dispatch_after(
+      dispatch_time(
+        DISPATCH_TIME_NOW,
+        Int64(delay * Double(NSEC_PER_SEC))
+      ),
+      dispatch_get_main_queue(), closure)
   }
   func speechSynthesizer(synthesizer: AVSpeechSynthesizer, didFinishSpeechUtterance utterance: AVSpeechUtterance) {
     didEndSpeaking()
@@ -66,16 +72,20 @@ class Speaker:NSObject, AVSpeechSynthesizerDelegate {
     } catch _ {
     }
   }
+
   private func speakString(string:String, language:String) {
     let utterance = AVSpeechUtterance(string: string)
     utterance.voice = AVSpeechSynthesisVoice(language: language)
     utterance.rate = utteranceRate
+    utterance.preUtteranceDelay = 0.4
+    utterance.postUtteranceDelay = 0.4
     speechSynthesizer.speakUtterance(utterance)
   }
   
   private func didEndSpeaking() {
     let errorPointer = NSErrorPointer()
     do {
+      try audioSession.setCategory(AVAudioSessionCategoryPlayback, withOptions: .MixWithOthers)
       try audioSession.setActive(false, withOptions: .NotifyOthersOnDeactivation)
     } catch let error as NSError {
       errorPointer.memory = error

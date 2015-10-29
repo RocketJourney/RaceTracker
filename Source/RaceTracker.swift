@@ -67,7 +67,14 @@ public struct RunSetup {
   public var goalDistance:Double
   public var goalTime:Int
   public var autopause:Bool
-  public init (unitSystem:Bool, voiceFeedback:RunType, voiceDistance:Double, voiceTime:Int, goalType:RunType, goalDistance:Double, goalTime:Int, autopause:Bool) {
+  public init (unitSystem:Bool,
+            voiceFeedback:RunType,
+            voiceDistance:Double,
+                voiceTime:Int,
+                 goalType:RunType,
+             goalDistance:Double,
+                 goalTime:Int,
+                autopause:Bool) {
     self.unitSystem = unitSystem
     self.goalType = goalType
     self.voiceFeedback = voiceFeedback
@@ -108,7 +115,7 @@ public class RaceTracker: NSObject {
   private var cachedToPosition = 0 //position we cached to, last time we called delegate?.cacheRun(:)
   private var voiceFeedback : RunType
   private let date = NSDate()
-  private var segment = 1
+  private var segment = 0
   // Milestones are references to each mile or kilometer completed.
   private var metricMilestone = Array<Int>()
   private var royalMilestone = Array<Int>()

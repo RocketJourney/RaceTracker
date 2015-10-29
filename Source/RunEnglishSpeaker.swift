@@ -77,7 +77,7 @@ class RunEnglishSpeaker : RunTrackerSpeechLanguageProvider {
     return " \(distance.firstUnit) point \(printFirst(distance.secondUnit)) \(units) to go... \(timeString(time)),.. Average pace.., \(pace.firstUnit) minutes, \(pace.secondUnit) seconds per \(unit)"
   }
   func sayMidpoint(time:TimeStructure, distance:DistanceStructure, pace:PaceStructure)->String {
-    return " mid point. " + sayFeedbackDecremental(time, distance: distance, pace: pace)
+    return " mid point,... " + sayFeedbackDecremental(time, distance: distance, pace: pace)
   }
   func sayGoalAchieved(time:TimeStructure, distance:DistanceStructure, pace:PaceStructure)->String {
     return " goal achieved!,..    " + sayFeedback(time, distance: distance, pace: pace)
