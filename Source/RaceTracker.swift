@@ -115,7 +115,7 @@ public class RaceTracker: NSObject {
   private var cachedToPosition = 0 //position we cached to, last time we called delegate?.cacheRun(:)
   private var voiceFeedback : RunType
   private let date = NSDate()
-  private var segment = 0
+  private var segment = 1
   // Milestones are references to each mile or kilometer completed.
   private var metricMilestone = Array<Int>()
   private var royalMilestone = Array<Int>()
