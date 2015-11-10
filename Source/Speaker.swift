@@ -9,16 +9,16 @@
 import Foundation
 import AVFoundation
 
-class Speaker:NSObject, AVSpeechSynthesizerDelegate {
+public class Speaker:NSObject, AVSpeechSynthesizerDelegate {
   
-  private var speechSynthesizer = AVSpeechSynthesizer()
-  var audioSession = AVAudioSession.sharedInstance()
+  private let speechSynthesizer = AVSpeechSynthesizer()
+  private let audioSession = AVAudioSession.sharedInstance()
   
-  private var utteranceRate = AVSpeechUtteranceDefaultSpeechRate * 0.83
+  public var utteranceRate = AVSpeechUtteranceDefaultSpeechRate * 0.83
   private var queue = [String]()
   
   var language:String
-  override init() {
+  public override init() {
     self.language = AVSpeechSynthesisVoice.currentLanguageCode()
     super.init()
     speechSynthesizer.delegate = self
@@ -27,11 +27,11 @@ class Speaker:NSObject, AVSpeechSynthesizerDelegate {
   deinit {
     NSNotificationCenter.defaultCenter().removeObserver(self)
   }
-  func shut() {
+  public func shut() {
     speechSynthesizer.stopSpeakingAtBoundary(.Immediate)
     queue.removeAll(keepCapacity: true)
   }
-  func speak(string:String) {
+  public func speak(string:String) {
     queue.append(string)
     if !speechSynthesizer.speaking {
       sayNext()
@@ -56,7 +56,7 @@ class Speaker:NSObject, AVSpeechSynthesizerDelegate {
       ),
       dispatch_get_main_queue(), closure)
   }
-  func speechSynthesizer(synthesizer: AVSpeechSynthesizer, didFinishSpeechUtterance utterance: AVSpeechUtterance) {
+  public func speechSynthesizer(synthesizer: AVSpeechSynthesizer, didFinishSpeechUtterance utterance: AVSpeechUtterance) {
     didEndSpeaking()
   }
   
