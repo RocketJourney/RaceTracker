@@ -328,6 +328,7 @@ public class RaceTracker: NSObject {
         pace = Double(time) / distance
         let speedMin = 60 * pace
         let climbed = sampleLocation.altitude - priorLocation.altitude
+        elevation += climbed
         var grade = 0.0
         if distanceToAdd > 1 {
           grade = climbed / distanceToAdd

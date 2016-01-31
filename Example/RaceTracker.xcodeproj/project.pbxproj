@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		374F6E4F84A483B9A2AC2B8B /* Pods_RaceTracker_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1174BEC94082C70514CAE178 /* Pods_RaceTracker_Tests.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		374F6E4F84A483B9A2AC2B8B /* Pods_RaceTracker_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1174BEC94082C70514CAE178 /* Pods_RaceTracker_Tests.framework */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* ViewController.swift */; };
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
@@ -27,7 +27,7 @@
 		94823E421BC1EE1D007F6A0D /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94823E411BC1EE1D007F6A0D /* MapKit.framework */; };
 		94C543C41BCF556400DE9154 /* Speaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94C543C31BCF556400DE9154 /* Speaker.swift */; };
 		94C543ED1BCF66AC00DE9154 /* RaceTracker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C543EC1BCF66AC00DE9154 /* RaceTracker.framework */; };
-		FE55021BFB5A87F7BE049566 /* Pods_RaceTracker_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 417E792206A235EB6E65F2FC /* Pods_RaceTracker_Example.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		FE55021BFB5A87F7BE049566 /* Pods_RaceTracker_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 417E792206A235EB6E65F2FC /* Pods_RaceTracker_Example.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -318,7 +318,7 @@
 				TargetAttributes = {
 					607FACCF1AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
-						DevelopmentTeam = PVHHX9DZ7N;
+						DevelopmentTeam = L9T32S589G;
 						SystemCapabilities = {
 							com.apple.Maps.iOS = {
 								enabled = 1;
@@ -618,7 +618,7 @@
 				INFOPLIST_FILE = RaceTracker/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.rocketjourney.racedemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
@@ -638,7 +638,7 @@
 				INFOPLIST_FILE = RaceTracker/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.rocketjourney.racedemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};

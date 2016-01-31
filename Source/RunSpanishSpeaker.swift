@@ -67,24 +67,24 @@ class RunSpanishSpeaker : RunTrackerSpeechLanguageProvider {
   }
   
   func sayFeedback(time:TimeStructure, distance:DistanceStructure, pace:PaceStructure)->String {
-    var string = distanceString(distance)
+    var string = "         " + distanceString(distance)
     string += timeString(time)
     string += paceString(pace)
-    return string
+    return string + "         "
   }
   func sayFeedbackDecremental(time:TimeStructure, distance:DistanceStructure, pace:PaceStructure)->String {
-    var string = " restan solo \(distance.firstUnit) punto \(distance.secondUnit) \(units),...  "
+    var string = "          restan solo \(distance.firstUnit) punto \(distance.secondUnit) \(units),...  "
     string += timeString(time)
     string += paceString(pace)
-    return string
+    return string + "         "
   }
   func sayMidpoint(time:TimeStructure, distance:DistanceStructure, pace:PaceStructure)->String {
-    return " mitad del camino,... " + sayFeedbackDecremental(time, distance: distance, pace: pace)
+    return "          mitad del camino,... " + sayFeedbackDecremental(time, distance: distance, pace: pace)
   }
   func sayGoalAchieved(time:TimeStructure, distance:DistanceStructure, pace:PaceStructure)->String {
-    return " meta alcanzada,... " + sayFeedback(time, distance: distance, pace: pace)
+    return "          meta alcanzada,... " + sayFeedback(time, distance: distance, pace: pace)
   }
   func sayLastSprint(time:TimeStructure, distance:DistanceStructure, pace:PaceStructure)->String {
-    return " ultimo estiron,... adelante,... "
+    return "          ultimo estiron,...          "
   }
 }

@@ -51,7 +51,7 @@ class RunEnglishSpeaker : RunTrackerSpeechLanguageProvider {
     return string
   }
   func sayFeedback(time:TimeStructure, distance:DistanceStructure, pace:PaceStructure)->String {
-    var string = "distance,..  \(distance.firstUnit), "
+    var string = "          distance,..  \(distance.firstUnit), "
     if distance.secondUnit > 9 {
       string += "point  "
       string += printFirst(distance.secondUnit)
@@ -63,7 +63,7 @@ class RunEnglishSpeaker : RunTrackerSpeechLanguageProvider {
     }
     string += timeString(time)
     string += "   "
-    string += paceString(pace)
+    string += paceString(pace) + "         "
     return string
   }
   private func printFirst(number:Int)->String {
@@ -74,15 +74,15 @@ class RunEnglishSpeaker : RunTrackerSpeechLanguageProvider {
     return " average pace,.. \(pace.firstUnit) minutes, \(pace.secondUnit) seconds per \(unit) "
   }
   func sayFeedbackDecremental(time:TimeStructure, distance:DistanceStructure, pace:PaceStructure)->String {
-    return " \(distance.firstUnit) point \(printFirst(distance.secondUnit)) \(units) to go... \(timeString(time)),.. Average pace.., \(pace.firstUnit) minutes, \(pace.secondUnit) seconds per \(unit)"
+    return "          \(distance.firstUnit) point \(printFirst(distance.secondUnit)) \(units) to go... \(timeString(time)),.. Average pace.., \(pace.firstUnit) minutes, \(pace.secondUnit) seconds per \(unit)          "
   }
   func sayMidpoint(time:TimeStructure, distance:DistanceStructure, pace:PaceStructure)->String {
-    return " mid point,... " + sayFeedbackDecremental(time, distance: distance, pace: pace)
+    return "          mid point,... " + sayFeedbackDecremental(time, distance: distance, pace: pace)
   }
   func sayGoalAchieved(time:TimeStructure, distance:DistanceStructure, pace:PaceStructure)->String {
-    return " goal achieved!,..    " + sayFeedback(time, distance: distance, pace: pace)
+    return "          goal achieved!,..    " + sayFeedback(time, distance: distance, pace: pace)
   }
   func sayLastSprint(time:TimeStructure, distance:DistanceStructure, pace:PaceStructure)->String {
-    return " last sprint. "
+    return "          last sprint.          "
   }
 }
