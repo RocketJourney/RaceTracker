@@ -11,7 +11,7 @@ import AVFoundation
 
 public class Speaker:NSObject, AVSpeechSynthesizerDelegate {
   
-  private var speechSynthesizer = AVSpeechSynthesizer()
+  public var speechSynthesizer = AVSpeechSynthesizer()
   var audioSession = AVAudioSession.sharedInstance()
   
   private var utteranceRate = AVSpeechUtteranceDefaultSpeechRate * 0.83
@@ -28,14 +28,16 @@ public class Speaker:NSObject, AVSpeechSynthesizerDelegate {
     NSNotificationCenter.defaultCenter().removeObserver(self)
   }
   public func shut() {
-    speechSynthesizer.stopSpeakingAtBoundary(.Immediate)
-    queue.removeAll(keepCapacity: true)
+    if speechSynthesizer.speaking {
+        queue.removeAll(keepCapacity: true)
+        speechSynthesizer.stopSpeakingAtBoundary(.Immediate)
+        speechSynthesizer.speakUtterance(AVSpeechUtterance(string: ""))
+        speechSynthesizer.stopSpeakingAtBoundary(.Immediate)
+    }
   }
   public func speak(string:String) {
     queue.append(string)
-    if !speechSynthesizer.speaking {
-      sayNext()
-    }
+    sayNext()
   }
   
   private func sayNext() {
@@ -43,8 +45,7 @@ public class Speaker:NSObject, AVSpeechSynthesizerDelegate {
       aboutToSpeak()
       if let stringToSpeak = queue[0] as String? {
         speakString(stringToSpeak, language: language)
-        queue.removeAtIndex(0)
-        sayNext()
+        
       }
     }
   }
@@ -57,19 +58,27 @@ public class Speaker:NSObject, AVSpeechSynthesizerDelegate {
       dispatch_get_main_queue(), closure)
   }
   public func speechSynthesizer(synthesizer: AVSpeechSynthesizer, didFinishSpeechUtterance utterance: AVSpeechUtterance) {
-    didEndSpeaking()
+    speechSynthesizer.delegate = self
+    if !queue.isEmpty {
+        queue.removeAtIndex(0)
+    }
+    
+    delay(0.8, closure: {
+        if self.queue.isEmpty && !synthesizer.speaking && utterance.speechString != "" {
+            self.didEndSpeaking()
+        } else {
+            self.sayNext()
+        }
+    })
   }
   
   private func aboutToSpeak() {
     let errorPointer = NSErrorPointer()
     do {
       try audioSession.setCategory(AVAudioSessionCategoryPlayback, withOptions: .DuckOthers)
+        try audioSession.setActive(true)
     } catch let error as NSError {
       errorPointer.memory = error
-    }
-    do {
-      try audioSession.setActive(true)
-    } catch _ {
     }
   }
 
@@ -85,10 +94,10 @@ public class Speaker:NSObject, AVSpeechSynthesizerDelegate {
   private func didEndSpeaking() {
     let errorPointer = NSErrorPointer()
     do {
-      try audioSession.setCategory(AVAudioSessionCategoryPlayback, withOptions: .MixWithOthers)
-      try audioSession.setActive(false, withOptions: .NotifyOthersOnDeactivation)
+        try audioSession.setCategory(AVAudioSessionCategoryPlayback, withOptions: .MixWithOthers)
+        try audioSession.setActive(false, withOptions: .NotifyOthersOnDeactivation)
     } catch let error as NSError {
-      errorPointer.memory = error
+        errorPointer.memory = error
     }
   }
 }

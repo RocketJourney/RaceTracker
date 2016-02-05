@@ -28,7 +28,7 @@ class RunSpanishSpeaker : RunTrackerSpeechLanguageProvider {
   private var unit = ""
   private var units = ""
   private func distanceString(distance:DistanceStructure)->String {
-    var string = "distancia,.. \(distance.firstUnit) "
+    var string = "distancia,.. \(distance.firstUnit == 1 ? "un" : "\(distance.firstUnit)") "
     if distance.secondUnit < 10 {
       if distance.firstUnit == 1 {
         string += unit
