@@ -20,6 +20,7 @@ import Foundation
 import CoreLocation
 import AVFoundation
 
+
 public typealias TimeStructure = (hours:Int, minutes:Int, seconds:Int)
 public typealias DistanceStructure = (firstUnit:Int, secondUnit:Int)
 public typealias PaceStructure = (firstUnit:Int, secondUnit:Int)
@@ -468,6 +469,12 @@ public class RaceTracker: NSObject {
   }
   
   //MARK: - Helpers
+    
+    func round2(number: Double, nearest: Double) -> Double {
+        return round(number / nearest) * nearest
+    }
+
+
   
   func getRunDiff()->Array<Coordinate>? {
     var locArr = [Coordinate]()
@@ -555,7 +562,8 @@ public class RaceTracker: NSObject {
       let _secondaryUnit = Int(enMiles / (conversion / 100.0))
       return DistanceStructure(firstUnit:mainUnit, secondUnit: _secondaryUnit)
     } else {
-      return DistanceStructure(firstUnit:0, secondUnit: Int(distance / (conversion / 100)))
+        let x = Int(distance / (conversion / 100))
+        return DistanceStructure(firstUnit:0, secondUnit: Int(round2(Double(x), nearest: 10.0)))
     }
   }
   func convertTimeAndDistanceToPaceStructure(time:Int, distance:Double, conversion:Double)->PaceStructure {
@@ -601,4 +609,7 @@ extension RaceTracker: CLLocationManagerDelegate {
       }
     }
   }
+    
+    
+    
 }

@@ -28,7 +28,10 @@ class RunSpanishSpeaker : RunTrackerSpeechLanguageProvider {
   private var unit = ""
   private var units = ""
   private func distanceString(distance:DistanceStructure)->String {
-    var string = "distancia,.. \(distance.firstUnit == 1 ? "un" : "\(distance.firstUnit)") "
+    
+    let one = distance.firstUnit == 1 && distance.secondUnit < 10 ? "un" : "uno"
+    
+    var string = "distancia,.. \(distance.firstUnit == 1 ? one : "\(distance.firstUnit)") "
     if distance.secondUnit < 10 {
       if distance.firstUnit == 1 {
         string += unit
@@ -85,6 +88,6 @@ class RunSpanishSpeaker : RunTrackerSpeechLanguageProvider {
     return "          meta alcanzada,... " + sayFeedback(time, distance: distance, pace: pace)
   }
   func sayLastSprint(time:TimeStructure, distance:DistanceStructure, pace:PaceStructure)->String {
-    return "          ultimo estiron,...          "
+    return "          casi terminamos...          "
   }
 }

@@ -37,15 +37,16 @@ public class Speaker:NSObject, AVSpeechSynthesizerDelegate {
   }
   public func speak(string:String) {
     queue.append(string)
-    sayNext()
+    sayNext(false)
   }
   
-  private func sayNext() {
+    private func sayNext(isClosure:Bool) {
     if !queue.isEmpty {
       aboutToSpeak()
       if let stringToSpeak = queue[0] as String? {
-        speakString(stringToSpeak, language: language)
-        
+        speakString(stringToSpeak, language: language)  
+      } else if isClosure {
+        self.didEndSpeaking()
       }
     }
   }
@@ -67,7 +68,7 @@ public class Speaker:NSObject, AVSpeechSynthesizerDelegate {
         if self.queue.isEmpty && !synthesizer.speaking && utterance.speechString != "" {
             self.didEndSpeaking()
         } else {
-            self.sayNext()
+            self.sayNext(true)
         }
     })
   }
