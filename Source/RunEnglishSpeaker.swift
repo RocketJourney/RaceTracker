@@ -71,7 +71,7 @@ class RunEnglishSpeaker : RunTrackerSpeechLanguageProvider {
     return String(string.first!)
   }
   private func paceString(pace:PaceStructure)->String{
-    return " average pace,.. \(pace.firstUnit) minutes, \(pace.secondUnit) seconds per \(unit) "
+    return " average pace,.. \(pace.firstUnit) , \(pace.secondUnit) per \(unit) "
   }
   func sayFeedbackDecremental(time:TimeStructure, distance:DistanceStructure, pace:PaceStructure)->String {
     return "          \(distance.firstUnit) point \(printFirst(distance.secondUnit)) \(units) to go... \(timeString(time)),.. Average pace.., \(pace.firstUnit) minutes, \(pace.secondUnit) seconds per \(unit)          "

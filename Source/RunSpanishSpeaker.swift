@@ -29,7 +29,7 @@ class RunSpanishSpeaker : RunTrackerSpeechLanguageProvider {
   private var units = ""
   private func distanceString(distance:DistanceStructure)->String {
     
-    let one = distance.firstUnit == 1 && distance.secondUnit < 10 ? "un" : "uno"
+    let one = distance.firstUnit == 1 && distance.secondUnit < 10 ? (_unitSystem ? "un" : "una") : "uno"
     
     var string = "distancia,.. \(distance.firstUnit == 1 ? one : "\(distance.firstUnit)") "
     if distance.secondUnit < 10 {
@@ -66,7 +66,7 @@ class RunSpanishSpeaker : RunTrackerSpeechLanguageProvider {
     return string
   }
   private func paceString(pace:PaceStructure)->String{
-    return " ritmo promedio: \(pace.firstUnit) minutos, \(pace.secondUnit) segundos por \(unit)"
+    return " ritmo promedio: \(pace.firstUnit) , \(pace.secondUnit) por \(unit)"
   }
   
   func sayFeedback(time:TimeStructure, distance:DistanceStructure, pace:PaceStructure)->String {

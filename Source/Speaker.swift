@@ -14,7 +14,7 @@ public class Speaker:NSObject, AVSpeechSynthesizerDelegate {
   public var speechSynthesizer = AVSpeechSynthesizer()
   var audioSession = AVAudioSession.sharedInstance()
   
-  private var utteranceRate = AVSpeechUtteranceDefaultSpeechRate * 0.83
+  private var utteranceRate = AVSpeechUtteranceDefaultSpeechRate
   private var queue = [String]()
   
   var language:String
@@ -22,31 +22,36 @@ public class Speaker:NSObject, AVSpeechSynthesizerDelegate {
     self.language = AVSpeechSynthesisVoice.currentLanguageCode()
     super.init()
     speechSynthesizer.delegate = self
+    throttle = Throttle(timeout: 0.8, callback: {
+        self.didEndSpeaking()
+    })
   }
-  
+    private var throttle:Throttle?
   deinit {
     NSNotificationCenter.defaultCenter().removeObserver(self)
   }
-  public func shut() {
-    if speechSynthesizer.speaking {
-        queue.removeAll(keepCapacity: true)
-        speechSynthesizer.stopSpeakingAtBoundary(.Immediate)
-        speechSynthesizer.speakUtterance(AVSpeechUtterance(string: ""))
-        speechSynthesizer.stopSpeakingAtBoundary(.Immediate)
-    }
+    
+    public func next(string:String) {
+        print("stop")
+    speechSynthesizer.stopSpeakingAtBoundary(.Immediate)
+    speechSynthesizer.speakUtterance(AVSpeechUtterance(string: ""))
+    speechSynthesizer.stopSpeakingAtBoundary(.Immediate)
+    speechSynthesizer = AVSpeechSynthesizer()
+    speechSynthesizer.delegate = self
+    queue.removeAll()
+    throttle!.cancel()
+    speak(string)
   }
   public func speak(string:String) {
     queue.append(string)
-    sayNext(false)
+    sayNext()
   }
   
-    private func sayNext(isClosure:Bool) {
-    if !queue.isEmpty {
+    private func sayNext() {
+    if !queue.isEmpty && !speechSynthesizer.speaking {
       aboutToSpeak()
       if let stringToSpeak = queue[0] as String? {
         speakString(stringToSpeak, language: language)  
-      } else if isClosure {
-        self.didEndSpeaking()
       }
     }
   }
@@ -58,26 +63,24 @@ public class Speaker:NSObject, AVSpeechSynthesizerDelegate {
       ),
       dispatch_get_main_queue(), closure)
   }
+    private var different = false
   public func speechSynthesizer(synthesizer: AVSpeechSynthesizer, didFinishSpeechUtterance utterance: AVSpeechUtterance) {
-    speechSynthesizer.delegate = self
-    if !queue.isEmpty {
-        queue.removeAtIndex(0)
+    if !queue.isEmpty { queue.removeAtIndex(0) }
+    if queue.isEmpty {
+        different = !different
+        throttle!.input()
+    } else {
+        sayNext()
     }
     
-    delay(0.8, closure: {
-        if self.queue.isEmpty && !synthesizer.speaking && utterance.speechString != "" {
-            self.didEndSpeaking()
-        } else {
-            self.sayNext(true)
-        }
-    })
   }
   
   private func aboutToSpeak() {
     let errorPointer = NSErrorPointer()
+    audioSession = AVAudioSession.sharedInstance()
     do {
-      try audioSession.setCategory(AVAudioSessionCategoryPlayback, withOptions: .DuckOthers)
         try audioSession.setActive(true)
+      try audioSession.setCategory(AVAudioSessionCategoryPlayback, withOptions: .DuckOthers)
     } catch let error as NSError {
       errorPointer.memory = error
     }
@@ -90,15 +93,57 @@ public class Speaker:NSObject, AVSpeechSynthesizerDelegate {
     utterance.preUtteranceDelay = 0.1
     utterance.postUtteranceDelay = 0.1
     speechSynthesizer.speakUtterance(utterance)
+    print("Speaking - \(string)")
   }
   
   private func didEndSpeaking() {
-    let errorPointer = NSErrorPointer()
-    do {
-        try audioSession.setCategory(AVAudioSessionCategoryPlayback, withOptions: .MixWithOthers)
-        try audioSession.setActive(false, withOptions: .NotifyOthersOnDeactivation)
-    } catch let error as NSError {
-        errorPointer.memory = error
+    if !speechSynthesizer.speaking && queue.isEmpty {
+        let errorPointer = NSErrorPointer()
+        do {
+            try audioSession.setActive(false)
+        } catch let error as NSError {
+            errorPointer.memory = error
+        }
     }
   }
+}
+
+
+
+
+
+class Throttle: NSObject {
+    let timeout: Double
+    let callback: Void -> Void
+    
+    var timer: NSTimer? = nil
+    
+    init(timeout: Double, callback: Void -> Void) {
+        self.timeout = timeout
+        self.callback = callback
+    }
+    
+    deinit {
+        timer?.invalidate()
+    }
+    
+    func input() {
+        cancel()
+        resetTimer()
+    }
+    
+    func cancel() {
+        if let timer = self.timer where timer.valid {
+            timer.invalidate()
+        }
+        timer = nil
+    }
+    
+    private func resetTimer() {
+        timer = NSTimer.scheduledTimerWithTimeInterval(timeout, target: self, selector: #selector(fetchTimerDidFire(_:)), userInfo: nil, repeats: false)
+    }
+    
+    func fetchTimerDidFire(sender: AnyObject) {
+        callback()
+    }
 }

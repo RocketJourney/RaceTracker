@@ -37,7 +37,7 @@ public protocol RunTrackerSpeechLanguageProvider {
 }
 
 public protocol RaceTrackerDelegate {
-  func updateViews(time: TimeStructure, distance: DistanceStructure, pace: PaceStructure, percent:Float)
+    func updateViews(time: TimeStructure, distance: DistanceStructure, pace: PaceStructure, percent:Float, valid: Bool)
   func logDescriptionString(string:String)
   func goalCompletion(percent:Double)
   func setIdle(isIdle:Bool)
@@ -46,11 +46,13 @@ public protocol RaceTrackerDelegate {
   func cacheRun(distance:Double,
                     time:Int,
                 calories:Int,
+                pace:Double,
                elevation:Double,
                 segments:Int,
         metricMilestones:Array<Int>,
          royalMilestones:Array<Int>,
-             coordinates:Array<Coordinate>)
+             coordinates:Array<Coordinate>,
+                   valid: Bool)
 }
 
 public enum RunType:Int {
@@ -68,6 +70,8 @@ public struct RunSetup {
   public var goalDistance:Double
   public var goalTime:Int
   public var autopause:Bool
+    public var locationManager:CLLocationManager?
+    public var type:String
   public init (unitSystem:Bool,
             voiceFeedback:RunType,
             voiceDistance:Double,
@@ -75,7 +79,8 @@ public struct RunSetup {
                  goalType:RunType,
              goalDistance:Double,
                  goalTime:Int,
-                autopause:Bool) {
+                autopause:Bool,
+                type:String) {
     self.unitSystem = unitSystem
     self.goalType = goalType
     self.voiceFeedback = voiceFeedback
@@ -84,7 +89,31 @@ public struct RunSetup {
     self.goalDistance = goalDistance
     self.goalTime = goalTime
     self.autopause = autopause
+    self.type = type
   }
+    
+    
+    public init (unitSystem:Bool,
+                 voiceFeedback:RunType,
+                 voiceDistance:Double,
+                 voiceTime:Int,
+                 goalType:RunType,
+                 goalDistance:Double,
+                 goalTime:Int,
+                 autopause:Bool,
+                 type:String,
+                 locationManager:CLLocationManager?) {
+        self.unitSystem = unitSystem
+        self.goalType = goalType
+        self.voiceFeedback = voiceFeedback
+        self.voiceDistance = voiceDistance
+        self.voiceTime = voiceTime
+        self.goalDistance = goalDistance
+        self.goalTime = goalTime
+        self.autopause = autopause
+        self.type = type
+        self.locationManager = locationManager
+    }
 }
 
 public class RaceTracker: NSObject {
@@ -105,10 +134,10 @@ public class RaceTracker: NSObject {
   private var voiceDistance:Double
   private var voiceTime:Int
   private var goalTime : Int
-  private var distance : Double = 0.0
+  public var distance : Double = 0.0
   private let updateInterval:Int16 = 3
   private var reachedNextVoice:Double
-  private let locationManager = CLLocationManager()
+  private var locationManager = CLLocationManager()
   private var paused = false
   private var pausedForAutopause = false
   private var calories = 0
@@ -127,7 +156,7 @@ public class RaceTracker: NSObject {
   private var timer : NSTimer?
   private var timeSinceUnpause = NSDate.timeIntervalSinceReferenceDate()
   private var noComparePoint = false
-  private var pace = 0.0
+  public var pace = 0.0
   private var speed = 0.0
   private var goalType:RunType
   
@@ -135,10 +164,34 @@ public class RaceTracker: NSObject {
   //--------------------------------------------------
   // MARK: - Initializers
   //--------------------------------------------------
+    
+    
+    private var paceGoalValid:Double
+    private var distanceGoalValid:Double
+    
   required public init(setup:RunSetup) {
     // Initial state
     metric = setup.unitSystem
     goalType = setup.goalType
+    
+    if (setup.type == "run") {
+        paceGoalValid =  540 / 1000
+        if (setup.unitSystem) {
+            distanceGoalValid = 1000.0;
+        } else {
+            distanceGoalValid = 1609.0;
+        }
+    } else {
+        paceGoalValid =  300 / 1000
+        if (setup.unitSystem) {
+            distanceGoalValid = 5000.0;
+        } else {
+            distanceGoalValid = 4827.0;
+        }
+    }
+
+    
+    
     hasGoal = goalType != .None ? true : false
     voiceFeedback = setup.voiceFeedback
     voiceDistance = setup.voiceDistance
@@ -149,12 +202,16 @@ public class RaceTracker: NSObject {
     goalTime = setup.goalTime
     isAutopauseEnabled = setup.autopause
     conversion = metric == true ? 1000.0 : 1609.0
+    if let locationManager = setup.locationManager {
+        self.locationManager = locationManager
+    }
     super.init()
     if #available(iOS 9.0, *) {
       locationManager.allowsBackgroundLocationUpdates = true
     }
     locationQueue.reserveCapacity(15000)
     currentRun.reserveCapacity(15000)
+    currentRunMetadata.reserveCapacity(15000)
     locationManager.delegate = self
     locationManager.distanceFilter = kCLDistanceFilterNone
     locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -228,7 +285,7 @@ public class RaceTracker: NSObject {
     } else {
       evaluateAutopause(-1.0)
     }
-    delegate?.updateViews(getTime(), distance: getDistance(), pace: getPace(), percent:0.5)
+    delegate?.updateViews(getTime(), distance: getDistance(), pace: getPace(), percent:0.5, valid: validRun())
   }
   private var delayedCache:Bool {
     get {
@@ -252,18 +309,26 @@ public class RaceTracker: NSObject {
       print("[RaceTracker] - Sending run to cache @ \(time) seconds distance \(distance)")
       delegate?.cacheRun(distance, time: time,
                                calories: calories,
+                                   pace: pace,
                               elevation: elevation,
                                segments: segment,
                        metricMilestones:[0],
                         royalMilestones:[0],
-                            coordinates: runDiff)
+                            coordinates: runDiff,
+                            valid: validRun())
     }
   }
   private func checkGoalAndFeedback() {
     switch goalType {
-    case .None: checkFeedback()
-    case .Distance: checkDistanceGoal()
-    case .Time: checkTimeGoal()
+    case .None:
+        checkFeedback()
+        break
+    case .Distance:
+        checkDistanceGoal()
+        break
+    case .Time:
+        checkTimeGoal()
+        break
     }
   }
   private func checkFeedback() {
@@ -323,6 +388,10 @@ public class RaceTracker: NSObject {
         let priorLocation = currentRun.last!
         let paceTimeInterval = sampleLocation.timestamp.timeIntervalSinceReferenceDate - priorLocation.timestamp.timeIntervalSinceReferenceDate
         let distanceToAdd = calculateDistanceFrom(priorLocation, newLocation: sampleLocation)
+        if distanceToAdd > 70 {
+            noComparePoint = true
+            return
+        } 
         distance = distance + distanceToAdd
         
         speed = distanceToAdd / paceTimeInterval
@@ -336,7 +405,7 @@ public class RaceTracker: NSObject {
         }
         let caloriesToAdd = (paceTimeInterval * weight * (3.5 + (0.2 * speedMin) + (0.9 * speedMin * grade))) / 12600
         calories += Int(caloriesToAdd)
-        currentRun.append(sampleLocation)
+        currentRun.append(sampleLocation.copy() as! CLLocation)
         currentRunMetadata.append(RunMetaData(pace: speed, segment: segment, time: time))
       }
       evaluateAccuracy((sampleLocation.horizontalAccuracy + sampleLocation.verticalAccuracy) / 2)
@@ -491,12 +560,19 @@ public class RaceTracker: NSObject {
   
   public func finishRun() {
     if let runDiff = getRunDiff() {
-      delegate?.cacheRun(distance, time: time, calories: calories, elevation: elevation, segments: segment, metricMilestones:[0], royalMilestones:[0], coordinates: runDiff)
+        delegate?.cacheRun(distance, time: time, calories: calories, pace: pace, elevation: elevation, segments: segment, metricMilestones:[0], royalMilestones:[0], coordinates: runDiff, valid: validRun())
     }
-    locationManager.stopUpdatingLocation()
-    locationManager.delegate = nil
     timer?.invalidate()
   }
+    
+    private func validRun()->Bool {
+        let valid = distance > distanceGoalValid && pace <= paceGoalValid
+        return valid
+    }
+    public func tearDown() {
+        locationManager.stopUpdatingLocation()
+        locationManager.delegate = nil
+    }
   private var speaker:RunTrackerSpeechLanguageProvider?
   private func setupSpeaker() {
     let code = AVSpeechSynthesisVoice.currentLanguageCode()
@@ -505,33 +581,43 @@ public class RaceTracker: NSObject {
     case "es-ES", "es-MX":
       print("[RaceTracker] - Setup spanish speaker")
       setLanguage(RunSpanishSpeaker())
+        break
     case "it-IT":
       print("[RaceTracker] - Setup italian speaker")
       setLanguage(RunItalianSpeaker())
+        break
     case "ja-JP":
       print("[RaceTracker] - Setup japannese speaker")
       setLanguage(RunJapanneseSpeaker())
+        break
     case "fr-CA", "fr-FR":
       print("[RaceTracker] - Setup french speaker")
       setLanguage(RunFrenchSpeaker())
+        break
     case "de-DE":
       print("[RaceTracker] - Setup german speaker")
       setLanguage(RunGermanSpeaker())
+        break
     case "nl-BE", "nl-NL":
       print("[RaceTracker] - Setup dutch speaker")
       setLanguage(RunDutchSpeaker())
+        break
     case "el-GR":
       print("[RaceTracker] - Setup greek speaker")
       setLanguage(RunGreekSpeaker())
+        break
     case "zh-CN":
       print("[RaceTracker] - Setup mandarin speaker")
       setLanguage(RunMandarinSpeaker())
+        break
     case "zh-HK":
       print("[RaceTracker] - Setup cantonese speaker")
       setLanguage(RunCantoneseSpeaker())
+        break
     default:
       print("[RaceTracker] - Setup english speaker")
       setLanguage(RunEnglishSpeaker())
+        break
     }
   }
   func setLanguage(speakerLanguage:RunTrackerSpeechLanguageProvider) {
@@ -554,18 +640,17 @@ public class RaceTracker: NSObject {
       }
     }
   }
-  func convertDistanceToDistanceStructure(distance:Double, conversion:Double)->DistanceStructure {
-    if distance >= conversion {
-      let _mainUnit = distance / conversion
-      let mainUnit = Int(_mainUnit)
-      let enMiles = distance % conversion
-      let _secondaryUnit = Int(enMiles / (conversion / 100.0))
-      return DistanceStructure(firstUnit:mainUnit, secondUnit: _secondaryUnit)
-    } else {
-        let x = Int(distance / (conversion / 100))
-        return DistanceStructure(firstUnit:0, secondUnit: Int(round2(Double(x), nearest: 10.0)))
+    func convertDistanceToDistanceStructure(distance:Double, conversion:Double)->DistanceStructure {
+        if distance >= conversion {
+            let _mainUnit = distance / conversion
+            let mainUnit = Int(_mainUnit)
+            let enMiles = distance % conversion
+            let _secondaryUnit = Int(enMiles / (conversion / 100.0))
+            return DistanceStructure(firstUnit:mainUnit, secondUnit: _secondaryUnit)
+        } else {
+            return DistanceStructure(firstUnit:0, secondUnit: Int(distance / (conversion / 100)))
+        }
     }
-  }
   func convertTimeAndDistanceToPaceStructure(time:Int, distance:Double, conversion:Double)->PaceStructure {
     if distance < 30 || time < 10 {
       return PaceStructure(0,0)
