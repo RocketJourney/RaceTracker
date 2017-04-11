@@ -35,20 +35,20 @@ extension UIView {
   /// The color of the layer's border. Defaults to opaque black. Colors created from tiled patterns are supported. Animatable.
   @IBInspectable var borderColor: UIColor? {
     get {
-      return UIColor(CGColor: self.layer.borderColor ?? UIColor.whiteColor().CGColor)
+      return UIColor(cgColor: self.layer.borderColor ?? UIColor.white.cgColor)
     }
     set {
-      self.layer.borderColor = newValue?.CGColor
+      self.layer.borderColor = newValue?.cgColor
     }
   }
   
   /// The color of the shadow. Defaults to opaque black. Colors created from patterns are currently NOT supported. Animatable.
   @IBInspectable var shadowColor: UIColor? {
     get {
-      return UIColor(CGColor: self.layer.shadowColor!)
+      return UIColor(cgColor: self.layer.shadowColor!)
     }
     set {
-      self.layer.shadowColor = newValue?.CGColor
+      self.layer.shadowColor = newValue?.cgColor
     }
   }
   

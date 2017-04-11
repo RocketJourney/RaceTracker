@@ -10,8 +10,8 @@ import UIKit
 
 class GoRunningSegue:UIStoryboardSegue {
   override func perform() {
-    let mainController = sourceViewController as! ViewController
-    let runningController = destinationViewController as! RunningViewController
+    let mainController = source as! ViewController
+    let runningController = destination as! RunningViewController
     
     mainController.navigationController?.pushViewController(runningController, animated: true)
   }

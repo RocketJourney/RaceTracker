@@ -15,76 +15,76 @@ class Preferences {
     }
     return Static.instance
   }
-  private let kLastRunType = "kLastRunType"
+  fileprivate let kLastRunType = "kLastRunType"
   var lastRunType:Int {
     get {
-      return NSUserDefaults.standardUserDefaults().integerForKey(kLastRunType)
+      return UserDefaults.standard.integer(forKey: kLastRunType)
     }
     set(value) {
-      NSUserDefaults.standardUserDefaults().setInteger(value, forKey: kLastRunType)
+      UserDefaults.standard.set(value, forKey: kLastRunType)
     }
   }
-  private let kUnitSystem = "kUnitSystem"
+  fileprivate let kUnitSystem = "kUnitSystem"
   var unitSystem:Bool {
     get {
-      return NSUserDefaults.standardUserDefaults().boolForKey(kUnitSystem)
+      return UserDefaults.standard.bool(forKey: kUnitSystem)
     }
     set(value) {
-      NSUserDefaults.standardUserDefaults().setBool(value, forKey: kUnitSystem)
+      UserDefaults.standard.set(value, forKey: kUnitSystem)
     }
   }
-  private let lastDistance = "kLastDistance"
+  fileprivate let lastDistance = "kLastDistance"
   var lastDistanceSelected:Int {
     get {
-      return NSUserDefaults.standardUserDefaults().integerForKey(lastDistance)
+      return UserDefaults.standard.integer(forKey: lastDistance)
     }
     set(value) {
-      NSUserDefaults.standardUserDefaults().setInteger(value, forKey: lastDistance)
+      UserDefaults.standard.set(value, forKey: lastDistance)
     }
   }
-  private let lastTime = "kLastTime"
+  fileprivate let lastTime = "kLastTime"
   var lastTimeSelected:Int {
     get {
-      return NSUserDefaults.standardUserDefaults().integerForKey(lastTime)
+      return UserDefaults.standard.integer(forKey: lastTime)
     }
     set(value) {
-      NSUserDefaults.standardUserDefaults().setInteger(value, forKey: lastTime)
+      UserDefaults.standard.set(value, forKey: lastTime)
     }
   }
-  private let voiceFeedback = "kVoiceFeedback"
+  fileprivate let voiceFeedback = "kVoiceFeedback"
   var voiceFeedbackEnabled:Int {
     get {
-      return NSUserDefaults.standardUserDefaults().integerForKey(voiceFeedback)
+      return UserDefaults.standard.integer(forKey: voiceFeedback)
     }
     set(value) {
-      NSUserDefaults.standardUserDefaults().setInteger(value, forKey: voiceFeedback)
+      UserDefaults.standard.set(value, forKey: voiceFeedback)
     }
   }
-  private let kVoiceFeedbackValue = "kvoiceFeedbackValue"
+  fileprivate let kVoiceFeedbackValue = "kvoiceFeedbackValue"
   var voiceFeedbackDistance:Int {
     get {
-      return NSUserDefaults.standardUserDefaults().integerForKey(kVoiceFeedbackValue)
+      return UserDefaults.standard.integer(forKey: kVoiceFeedbackValue)
     }
     set(value) {
-      NSUserDefaults.standardUserDefaults().setInteger(value, forKey: kVoiceFeedbackValue)
+      UserDefaults.standard.set(value, forKey: kVoiceFeedbackValue)
     }
   }
-  private let kVoiceFeedbackTime = "kvoiceFeedbackTime"
+  fileprivate let kVoiceFeedbackTime = "kvoiceFeedbackTime"
   var voiceFeedbackTime:Int {
     get {
-      return NSUserDefaults.standardUserDefaults().integerForKey(kVoiceFeedbackTime)
+      return UserDefaults.standard.integer(forKey: kVoiceFeedbackTime)
     }
     set(value) {
-      NSUserDefaults.standardUserDefaults().setInteger(value, forKey: kVoiceFeedbackTime)
+      UserDefaults.standard.set(value, forKey: kVoiceFeedbackTime)
     }
   }
-  private let kAutopauseEnabled = "kAutopauseEnabled"
+  fileprivate let kAutopauseEnabled = "kAutopauseEnabled"
   var autopause:Bool {
     get {
-      return NSUserDefaults.standardUserDefaults().boolForKey(kAutopauseEnabled)
+      return UserDefaults.standard.bool(forKey: kAutopauseEnabled)
     }
     set(value) {
-      NSUserDefaults.standardUserDefaults().setBool(value, forKey: kAutopauseEnabled)
+      UserDefaults.standard.set(value, forKey: kAutopauseEnabled)
     }
   }
 }

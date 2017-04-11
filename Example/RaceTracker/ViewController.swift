@@ -11,9 +11,9 @@ import CoreLocation
 
 class ViewController: UIViewController {
   var locationManager = CLLocationManager()
-  private var unitSystem:Bool
-  private var unitString:String
-  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+  fileprivate var unitSystem:Bool
+  fileprivate var unitString:String
+  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
     unitSystem = Preferences.instance.unitSystem
     distanceProvider = RunDistancePickerProvider(units: unitSystem)
     timeProvider = RunTimePickerProvider()
@@ -41,16 +41,16 @@ class ViewController: UIViewController {
     }
   }
   
-  private func updatedDistance(distance:Int) {
+  fileprivate func updatedDistance(_ distance:Int) {
     Preferences.instance.lastDistanceSelected = distance
   }
   
-  private func updateTime(timePosition:Int) {
+  fileprivate func updateTime(_ timePosition:Int) {
     Preferences.instance.lastTimeSelected = timePosition
   }
   
-  private let distanceProvider:RunDistancePickerProvider
-  private let timeProvider:RunTimePickerProvider
+  fileprivate let distanceProvider:RunDistancePickerProvider
+  fileprivate let timeProvider:RunTimePickerProvider
   
   @IBOutlet weak var distanceRunView: UIView!
   @IBOutlet weak var timeRunView: UIView!
@@ -67,15 +67,15 @@ class ViewController: UIViewController {
     setupStyle()
     setupGps()
     updateUnitSystem(unitSystem)
-    NSNotificationCenter.defaultCenter().addObserver(self, selector: "setupGps", name: UIApplicationDidBecomeActiveNotification, object: nil)
+    NotificationCenter.default.addObserver(self, selector: "setupGps", name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
   }
   
-  override func viewDidDisappear(animated: Bool) {
+  override func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
-    NSNotificationCenter.defaultCenter().removeObserver(self)
+    NotificationCenter.default.removeObserver(self)
   }
   
-  private func setupPickerViews() {
+  fileprivate func setupPickerViews() {
     distancePickerView.delegate = distanceProvider
     distancePickerView.dataSource = distanceProvider
     timePickerView.delegate = timeProvider
@@ -84,13 +84,13 @@ class ViewController: UIViewController {
     timePickerView.selectRow(Preferences.instance.lastTimeSelected, inComponent: 0, animated: false)
   }
   
-  private func setupLastSelected() {
+  fileprivate func setupLastSelected() {
     let lastSelected = Preferences.instance.lastRunType
     segmentControl.selectedSegmentIndex = lastSelected
     changeTo(lastSelected)
     setupFeedbackBtn()
   }
-  private func setupFeedbackBtn() {
+  fileprivate func setupFeedbackBtn() {
     let prefs = Preferences.instance
     let feedbackType = prefs.voiceFeedbackEnabled
     var feedbackValue:Int
@@ -104,43 +104,43 @@ class ViewController: UIViewController {
     updateFeedbackLabel(feedbackType, value: feedbackValue)
   }
   
-  private func setFeedbackTitle(string:String) {
-    feedbackBtn.setTitle(string, forState: .Normal)
+  fileprivate func setFeedbackTitle(_ string:String) {
+    feedbackBtn.setTitle(string, for: UIControlState())
   }
   
-  private func setupStyle() {
+  fileprivate func setupStyle() {
     goBtn.layer.cornerRadius = goBtn.frame.size.height / 2
     goBtn.layer.masksToBounds = true
   }
   
-  @IBAction func goSettings(sender: AnyObject) {
-    UIApplication.sharedApplication().openURL(NSURL(string: UIApplicationOpenSettingsURLString)!)
+  @IBAction func goSettings(_ sender: AnyObject) {
+    UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
 
   }
   
   func setupGps() {
     let status = CLLocationManager.authorizationStatus()
     switch status {
-    case .AuthorizedWhenInUse, .AuthorizedAlways: showViewIfAvailable()
-    case .Denied, .Restricted: _goToSettings()
-    case .NotDetermined: locationManager.requestWhenInUseAuthorization()
+    case .authorizedWhenInUse, .authorizedAlways: showViewIfAvailable()
+    case .denied, .restricted: _goToSettings()
+    case .notDetermined: locationManager.requestWhenInUseAuthorization()
     }
   }
 
-  @IBAction func goRunning(sender: AnyObject) {
-    performSegueWithIdentifier("kGoRunningSegue", sender: nil)
+  @IBAction func goRunning(_ sender: AnyObject) {
+    performSegue(withIdentifier: "kGoRunningSegue", sender: nil)
   }
   
-  @IBAction func feedbackAction(sender: AnyObject) {
-    performSegueWithIdentifier("kGoRunSettings", sender: nil)
+  @IBAction func feedbackAction(_ sender: AnyObject) {
+    performSegue(withIdentifier: "kGoRunSettings", sender: nil)
   }
   
-  @IBAction func changedTab(sender: UISegmentedControl) {
+  @IBAction func changedTab(_ sender: UISegmentedControl) {
     let number = sender.selectedSegmentIndex
     Preferences.instance.lastRunType = number
     changeTo(number)
   }
-  private func changeTo(num:Int) {
+  fileprivate func changeTo(_ num:Int) {
     switch num {
     case 1: pickDistance()
     case 2: pickTime()
@@ -149,31 +149,31 @@ class ViewController: UIViewController {
   }
   @IBOutlet weak var goToSettingsView: UIView!
   
-  private func pickDistance() {
-    distanceRunView.hidden = false
-    timeRunView.hidden = true
+  fileprivate func pickDistance() {
+    distanceRunView.isHidden = false
+    timeRunView.isHidden = true
   }
   
-  private func pickTime() {
-    distanceRunView.hidden = true
-    timeRunView.hidden = false
+  fileprivate func pickTime() {
+    distanceRunView.isHidden = true
+    timeRunView.isHidden = false
   }
   
-  private func pickFree() {
-    distanceRunView.hidden = true
-    timeRunView.hidden = true
+  fileprivate func pickFree() {
+    distanceRunView.isHidden = true
+    timeRunView.isHidden = true
   }
   @IBOutlet weak var unitLabel: UILabel!
 }
 
 extension ViewController:RunSettingsDelegate {
-  func updateUnitSystem(unitSystem:Bool) {
+  func updateUnitSystem(_ unitSystem:Bool) {
     unitString = unitSystem ? "km" : "mi"
     unitLabel.text = unitString
     self.unitSystem = unitSystem
     setupFeedbackBtn()
   }
-  func updateFeedbackLabel(type:Int, value:Int) {
+  func updateFeedbackLabel(_ type:Int, value:Int) {
     switch type {
     case 0: setFeedbackTitle("No Feedback")
     case 1:
@@ -196,34 +196,34 @@ extension ViewController:RunSettingsDelegate {
 }
 
 extension ViewController:CLLocationManagerDelegate {
-  private func showViewIfAvailable() {
-    goToSettingsView.hidden = true
-    goBtn.hidden = false
-    segmentControl.hidden = false
-    feedbackBtn.hidden = false
+  fileprivate func showViewIfAvailable() {
+    goToSettingsView.isHidden = true
+    goBtn.isHidden = false
+    segmentControl.isHidden = false
+    feedbackBtn.isHidden = false
     changeTo(segmentControl.selectedSegmentIndex)
   }
-  private func askForGpsPermissions() {
-    goToSettingsView.hidden = true
-    goBtn.hidden = true
-    segmentControl.hidden = true
-    feedbackBtn.hidden = true
-    timeRunView.hidden = true
-    distanceRunView.hidden = true
+  fileprivate func askForGpsPermissions() {
+    goToSettingsView.isHidden = true
+    goBtn.isHidden = true
+    segmentControl.isHidden = true
+    feedbackBtn.isHidden = true
+    timeRunView.isHidden = true
+    distanceRunView.isHidden = true
   }
-  private func _goToSettings() {
-    goToSettingsView.hidden = false
-    goBtn.hidden = true
-    segmentControl.hidden = true
-    feedbackBtn.hidden = true
-    timeRunView.hidden = true
-    distanceRunView.hidden = true
+  fileprivate func _goToSettings() {
+    goToSettingsView.isHidden = false
+    goBtn.isHidden = true
+    segmentControl.isHidden = true
+    feedbackBtn.isHidden = true
+    timeRunView.isHidden = true
+    distanceRunView.isHidden = true
   }
-  func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+  func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
     switch status {
-    case .AuthorizedWhenInUse: showViewIfAvailable()
-    case .NotDetermined: askForGpsPermissions()
-    case .Restricted, .Denied: _goToSettings()
+    case .authorizedWhenInUse: showViewIfAvailable()
+    case .notDetermined: askForGpsPermissions()
+    case .restricted, .denied: _goToSettings()
     default: break
     }
   }
