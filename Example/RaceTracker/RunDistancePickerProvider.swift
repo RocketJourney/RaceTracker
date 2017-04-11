@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-typealias UpdateValueBlock = (value:Int)->()
+typealias UpdateValueBlock = (_ value:Int)->()
 class RunDistancePickerProvider:NSObject, UIPickerViewDelegate, UIPickerViewDataSource {
   required init(units:Bool) {
     unitSystem = units
